@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <title>React App</title>
+</head>
+
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+        <div class="container">
+            <div class='searchBlock row' style="margin-top: 20px !important;">
+                <div class='col-lg-12 col-12'>
+                    <input type='text' id="workName" placeholder='Название..' value="<%= workInfo.workname %>"/>
+                </div>
+            </div>
+            <div class='searchBlock row' id="filters">
+                <div class='col-lg-6 col-6'>
+                    <select id="firstCategory">
+                        <option value="0">Категория</option>
+                        <% worksTypesFirst.forEach((wtf)=> { %>
+                            <% if (wtf.id == workInfo.fkworktypefirst) { %>
+                                <option value="<%= wtf.id %>" selected><%= wtf.worktypename %></option>
+                            <%} else { %>
+                                <option value="<%= wtf.id %>"><%= wtf.worktypename %></option>
+                            <% } %>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class='col-lg-6 col-6'>
+                    <select id="secondCategory">
+                        <option value="0">Подкатегория</option>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-4" style="margin-top: 15px; vertical-align: middle;">
+                    <h6 style="display: inline-block;">Цена</h6>
+                </div>
+                <div class="col-lg-8 col-8" style="margin-top: 15px;">
+                    <input type="number" id="workPrice" value="<%= workInfo.price %>">
+                </div>
+                <div class="col-lg-2 col-6" style="margin-top: 15px; vertical-align: middle;">
+                    <h6 style="display: inline-block;">Бесплатно</h6>
+                </div>
+                <div class="col-lg-1 col-1" style="margin-top: 15px; vertical-align: middle;">
+                    <div class="checkbox">
+                        <% if (workInfo.isfree) { %>
+                            <input type="checkbox" class="input-assumpte" id="isFree" value="false" checked/>
+                        <%} else { %>
+                            <input type="checkbox" class="input-assumpte" id="isFree" value="false"/>
+                        <% } %>
+                        <label for="isFree"></label>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-6" style="margin-top: 15px; vertical-align: middle;">
+                    <h6 style="display: inline-block;">Можно ли написать</h6>
+                </div>
+                <div class="col-lg-1 col-1" style="margin-top: 15px; vertical-align: middle;">
+                    <div class="checkbox">
+                        <% if (workInfo.cansendmessage) { %>
+                            <input type="checkbox" class="input-assumpte" id="isCanWrite" value="false" checked/>
+                        <%} else { %>
+                            <input type="checkbox" class="input-assumpte" id="isCanWrite" value="false"/>
+                        <% } %>
+                        <label for="isCanWrite"></label>
+                    </div>
+                </div>
+                <p  style="margin-top: 15px;">Добавьте пару тегов, описывающие работу</p>
+                <div class='col-lg-8 col-8'>
+                    <input type='text' id="tagValue" placeholder='Введите тег' />
+                </div>
+                <div class='col-lg-4 col-4'>
+                    <button onclick="addTag()">Добавить</button>
+                </div>
+                <div class="row" style="margin-top: 15px; vertical-align: middle" id="tagPlace">
+                    <% workTags.forEach((wt)=> { %>
+                        <div class="col-auto tagParentBlock" id="tag<%= wt.tagname %>">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <p class="tagToPost" ><%= wt.tagname %></p>
+                                </div>
+                                <div class="col-auto">
+                                    <p onClick="deleteTag('tag<%= wt.tagname %>')">✕</p>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+                <div class="col-12" style="margin-top: 15px; vertical-align: middle;">
+                    <p>Введите описание</p>
+                    <textarea rows="8" id="workDiscribtion"><%= workInfo.description %></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var workTypesSecond = <%- JSON.stringify(worksTypesSecond) %>
+        var selectedTypeSecond = <%- workInfo.fkworktypesecond %>
+        var workId = <%- workInfo.id %>
+    </script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script src="/js/scriptEditWork.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</body>
+
+</html>

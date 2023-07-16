@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <title>React App</title>
+</head>
+
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div class="load-wrapp" id="loadSpin" style="visibility: hidden;">
+        <div class="load-3">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+    </div>
+    <div class="load-wrapp2" id="loadSpin2" style="visibility: hidden;">
+        <div class="load-3">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+    </div>
+    <div id="root">
+        <div class='container'>
+            <div class='searchBlock row' style="margin-top: 5% !important; ">
+                <div class='col-lg-12 col-12'>
+                    <input type='text' id="workName" placeholder='Поиск..' />
+                </div>
+            </div>
+            <div class='searchBlock row' id="filters">
+                <div class='col-lg-6 col-6'>
+                    <select id="firstCategory">
+                        <option value="0">Категория</option>
+                        <% worksTypesFirst.forEach((wtf)=> { %>
+                            <option value="<%= wtf.id %>">
+                                <%= wtf.worktypename %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+                <div class='col-lg-6 col-6'>
+                    <select id="secondCategory">
+                        <option value="0">Подкатегория</option>
+                    </select>
+                </div>
+                <div class="col-lg-1 col-6" style="margin-top: 15px; vertical-align: middle;">
+                    <h6 style="display: inline-block;">Цена от</h6>
+                </div>
+                <div class="col-lg-5 col-8" style="margin-top: 15px;">
+                    <div class="slidecontainer">
+                        <input type="range" min="0" max="10000" value="0" class="slider" id="myRange">
+                    </div>
+                </div>
+                <div class='col-lg-2 col-4' style="margin-top: 15px;">
+                    <input type='number' id="priceTo" placeholder='Цена' value="0" />
+                </div>
+                <div class='col-lg-8 col-8' style="margin-top: 15px;">
+                    <input type='text' id="tagValue" placeholder='Введите тег' />
+                </div>
+                <div class='col-lg-4 col-4' style="margin-top: 15px;">
+                    <button onclick="addTag()">Добавить</button>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px; vertical-align: middle" id="tagPlace">
+
+            </div>
+            <button class='confimButton' id="findButton">Найти</button>
+        </div>
+        <div class='container'>
+            <input type="hidden" value="1" id="pageNumber" />
+            <div class='resultBlock row' id="resultBlock">
+                <% orders.forEach((order)=> { %>
+                    <div class='col-lg-6 col-12 orderBlock'>
+                        <h5>
+                            <%= order.ordername %>
+                        </h5>
+                        <p>
+                            <%= order.description.substr(0, 100) %> <span style="color: var(--firstColor)" onclick="openOrder(<%= order.id %>)">Подробнее...</span>
+                        </p>
+                        <div>
+                            <div style="float: left;">
+                                <h6>
+                                    До <%= order.adddate %>
+                                </h6>
+                            </div>
+                            <div style="float: right;">
+                                <h6>
+                                    <%= String(order.price) %> ₽
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+            <br>
+            <button class="confimButton" id="loadMore">Показать еще</button>
+        </div>
+        <div class="modal fade" id="workModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" id="mc">
+                    <div class="modal-header">
+                        <div class="container">
+                            <h5 class="modal-title" id="workNameInfo"></h5>
+                        </div>
+                        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <input type="hidden" id="workInfoId">
+                            <p style="text-align: justify;" id="workInfoDescription"></p>
+                            <a id="userLink" href=""><button style="width: 70%; margin-bottom: 15px;" class="confimButton" id="canWrite">
+                                Написать заказчику</button></a>
+                            <div class="row" style="text-align: center;">
+                                <hr>
+                                <div class="col-6">
+                                    <p id="workInfoFistCategory"></p>
+                                </div>
+                                <div class="col-6">
+                                    <p id="workInfoSecondCategory"></p>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="row" style="text-align: center;">
+                                <div class="col-6">
+                                    <p>Сделать до</p>
+                                    <p>Цена</p>
+                                </div>
+                                <div class="col-6">
+                                    <p id="workInfoData"></p>
+                                    <p id="workInfoPrice"></p>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 15px; vertical-align: middle" id="workInfoTagPlace">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+    <script>
+        var workTypesSecond = <%- JSON.stringify(worksTypesSecond) %>
+        var workAllCount = <%- allCount %>
+    </script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script src="/js/orders.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</body>
+
+</html>

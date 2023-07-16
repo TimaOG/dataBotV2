@@ -16,15 +16,6 @@
 
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <header>
-        <nav class="navbar navbar-expand-lg fixed-top" style="background-color: var(--secondColor);">
-            <div class="container" style="text-align: right;">
-                <button class="basket" data-bs-toggle="modal" data-bs-target="#basket" id="basketCount">Корзина:
-                    0</button>
-            </div>
-            </div>
-        </nav>
-    </header>
     <div class="load-wrapp" id="loadSpin" style="visibility: hidden;">
         <div class="load-3">
           <div class="line"></div>
@@ -39,17 +30,9 @@
           <div class="line"></div>
         </div>
     </div>
-    <div id="notification" class="notB" onclick="hideNotification()">
-        <input type="checkbox" class="alertCheckbox" autocomplete="off" />
-        <div class="alert info">
-          <span class="alertClose">X</span>
-          <span class="alertText" id="notificationText">Позиция добавлена в корзину
-              <br class="clear"/></span>
-        </div>
-    </div> 
     <div id="root">
         <div class='container'>
-            <div class='searchBlock row' style="margin-top: 15% !important; ">
+            <div class='searchBlock row' style="margin-top: 5% !important; ">
                 <div class='col-lg-12 col-12'>
                     <input type='text' id="workName" placeholder='Поиск..' />
                 </div>
@@ -106,25 +89,27 @@
             <input type="hidden" value="1" id="pageNumber" />
             <div class='resultBlock row' id="resultBlock">
                 <% works.forEach((work)=> { %>
-                    <div class='col-lg-6 col-12 workBlock '>
+                    <div class='col-lg-6 col-12 orderBlock'>
                         <h5>
-                            <%= work.workname %> (<%= work.adddate %>)
+                            <%= work.workname %>
                         </h5>
-                        <h6>
-                            <% if(work.price == 0){ %>
-                                Бесплатно
-                              <% } else{ %>
-                                <%= String(work.price)%> ₽
-                              <% } %>
-                        </h6>
-                        <div class='row'>
-                            <div class='col-6'>
-                                <button onclick="openWork(<%= work.id %>)">Подробнее</button>
+                        <p>
+                            <%= work.description.substr(0, 100) %> <span style="color: var(--firstColor)" onclick="openWork(<%= work.id %>)">Подробнее...</span>
+                        </p>
+                        <div>
+                            <div style="float: left;">
+                                <h6>
+                                    До <%= work.adddate %>
+                                </h6>
                             </div>
-                            <div class='col-6'>
-                                <button
-                                    onclick="addWorkFromList(<%= work.id %>, '<%= work.workname %>', <%= work.price %>)">В
-                                    корзину</button>
+                            <div style="float: right;">
+                                <h6>
+                                    <% if(work.price == 0){ %>
+                                        Бесплатно
+                                      <% } else{ %>
+                                        <%= String(work.price)%> ₽
+                                      <% } %>
+                                </h6>
                             </div>
                         </div>
                     </div>
@@ -176,79 +161,6 @@
                                 </div>
                                 <div class="col-7" style="text-align: left;">
                                     <p id="workRatingAll"></p>
-                                </div>
-                            </div>
-                            <div class='row'>
-                                <hr>
-                                <div class='col-6'>
-                                    <button style="margin-top: 15px;" class="confimButton" onclick="basketGetWorks()">Получить</button>
-                                </div>
-                                <div class='col-6'>
-                                    <button style="margin-top: 15px;" class="confimButton" id="addToBasket">В
-                                        корзину</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="basket" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="container">
-                            <h5 class="modal-title">Корзина</h5>
-                        </div>
-                        <button type="button" style="color: #fff;" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Закрыть"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <div id="basketBody">
-
-                            </div>
-                            <div class='row'>
-                                <div class='col-12'>
-                                    <p style="margin-top: 15px;" id="totalPriceBasket">Итого:</p>
-                                </div>
-                            </div>
-                            <div class='row'>
-                                <hr>
-                                <div class='col-6'>
-                                    <button style="margin-top: 15px;" onclick="basketGetWorks()"
-                                        class="confimButton">Получить</button>
-                                </div>
-                                <div class='col-6'>
-                                    <button style="margin-top: 15px;" id="clearBasket"
-                                        class="confimButton">Очистить</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="payments" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="container">
-                            <h5 class="modal-title">Оплата</h5>
-                        </div>
-                        <button type="button" style="color: #fff;" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Закрыть"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <div id="paymentsBody">
-                            </div>
-                            <hr>
-                            <div class='row'>
-                                <div class='col-12'>
-                                    <p style="margin-top: 15px;" id="totalPrice">Итого:</p>
                                 </div>
                             </div>
                         </div>

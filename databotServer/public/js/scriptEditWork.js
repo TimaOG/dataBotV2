@@ -114,7 +114,6 @@ Telegram.WebApp.onEvent('mainButtonClicked', function(){
     dataToSend.firstCategory = $('#firstCategory').val()
     dataToSend.secondCategory = $('#secondCategory').val()
     dataToSend.workPrice = $('#workPrice').val()
-    dataToSend.isCanWrite = document.getElementById('isCanWrite').checked
     dataToSend.isFree = document.getElementById('isFree').checked
     var tagList = document.getElementsByClassName('tagToPost');
     var tagListToSend = []

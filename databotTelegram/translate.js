@@ -58,7 +58,9 @@ const wordByCode = {
         'SetFeedback': 'Оставить оценку',
         'SetFeedbackDone': 'Оценка поставлена',
         'SetFeedbackRaiting': 'Введите число от 1 до 5',
-        'StopSpam': 'Пожалуйста, прекратите слишком часто отправлять сообщения, бот все равно защищен от этого'
+        'StopSpam': 'Пожалуйста, прекратите слишком часто отправлять сообщения, бот все равно защищен от этого',
+        'WorkHaveAdd': '',
+        'OrderHaveAdd': ''
     }
 }
 module.exports = { wordByCode:wordByCode, existLenCode:existLenCode, siteUrl:siteUrl };

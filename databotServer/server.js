@@ -5,7 +5,7 @@ const {server} = require('./config.js')
 
 
 app.get('/works', async (req, res) => {
-    const works = await pool.query('SELECT id, workName, price, adddate::varchar from works limit 20', []);
+    const works = await pool.query('SELECT id, workName, price,description ,adddate::varchar from works limit 20', []);
     const worksTypesFirst = await pool.query('SELECT id, worktypename from worktypefirst ', []);
     const worksTypesSecond = await pool.query('SELECT id, worktypename, fkfirsttype from worktypesecond ', []);
     const allCount = await pool.query('SELECT count(id) from works ', []);
@@ -92,7 +92,7 @@ function getSqlRequestWorks(requst, pageNumber) {
     pageNumber -= 1
     var iter = 1
     var argArr = []
-    var startReq = `SELECT w.id, w.workName, w.price, w.adddate::varchar FROM works
+    var startReq = `SELECT w.id, w.workName, w.price, w.description,w.adddate::varchar FROM works
      AS w LEFT JOIN worktags AS wt ON wt.fkwork = w.id WHERE w.id IS NOT NULL`
     if(requst.workName !== '') {
         startReq += ` AND w.workname like '%${requst.workName}%'`

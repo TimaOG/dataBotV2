@@ -14,11 +14,11 @@ async function createUserIfExist(userFirstName, userId, userName) {
     DO NOTHING`, [userId, userFirstName, userName]);
 }
 
-async function addWork(workInfo, file_id) {
+async function addWork(workInfo) {
     const workIdArr = await pool.query(`INSERT INTO Works (workName, fkuserowner, description,
-        price, fkworktypefirst, fkworktypesecond, isfree, cansendmessage, fileId, adddate) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,NOW()) RETURNING id`,
+        price, fkworktypefirst, fkworktypesecond, isfree, adddate) VALUES ($1,$2,$3,$4,$5,$6,$7,NOW()) RETURNING id`,
         [workInfo.workName, workInfo.userId, workInfo.workDiscribtion, workInfo.workPrice, workInfo.firstCategory,
-        workInfo.secondCategory, workInfo.isFree, workInfo.isCanWrite, file_id])
+        workInfo.secondCategory, workInfo.isFree])
     const workId = workIdArr.rows[0]["id"];
     if (workInfo.tags != null) {
         for (let i = 0; i < workInfo.tags.length; i++) {
@@ -44,9 +44,9 @@ async function addOrder(orderInfo) {
 
 async function editWork(workInfo) {
     pool.query(`UPDATE Works SET workName = $1, description = $2, price = $3, 
-    fkworktypefirst = $4, fkworktypesecond = $5, isfree = $6, cansendmessage=$7 WHERE id = $8 AND fkuserowner = $9`,
+    fkworktypefirst = $4, fkworktypesecond = $5, isfree = $6 WHERE id = $7 AND fkuserowner = $8`,
         [workInfo.workName, workInfo.workDiscribtion, workInfo.workPrice, workInfo.firstCategory,
-        workInfo.secondCategory, workInfo.isFree, workInfo.isCanWrite, workInfo.id, workInfo.userId])
+        workInfo.secondCategory, workInfo.isFree, workInfo.id, workInfo.userId])
     await pool.query(`DELETE FROM workTags WHERE fkwork = $1`, [workInfo.id])
     if (workInfo.tags != null) {
         for (let i = 0; i < workInfo.tags.length; i++) {
@@ -67,10 +67,6 @@ async function deleteWork(workId) {
 async function deleteOrder(workId) {
     await pool.query(`DELETE FROM orderTags WHERE fkwork = $1`, [workId])
     pool.query(`DELETE FROM Orders WHERE id = $1`, [workId])
-}
-
-async function addDocumentToWork(workId, fileId) {
-    pool.query("UPDATE Works SET fileId = $1 WHERE id = $2", [fileId, workId])
 }
 
 async function getAddedWorks(userId) {
@@ -101,91 +97,19 @@ async function getOrderInfo(workId) {
     return [workInfo.rows, workTags.rows]
 }
 
-async function saveCardNumber(cardNumber, userId) {
-    pool.query(`UPDATE Users SET cardnumber = $1 WHERE id = $2`, [cardNumber, userId]);
-}
 
 async function getAccountInfo(userId) {
     const countWorks = await pool.query(`SELECT count(id) FROM Works WHERE fkuserowner=$1`, [userId]);
     const countOrders = await pool.query(`SELECT count(id) FROM Orders WHERE fkuserowner=$1`, [userId]);
     const countBWorks = await pool.query(`SELECT count(id) FROM boughtworks WHERE fkuserowner=$1`, [userId]);
-    const accountInfo = await pool.query(`SELECT id, userfirstname, rating,
-    balance, registrationdate::varchar, cardnumber FROM Users WHERE id=$1`, [userId]);
+    const accountInfo = await pool.query(`SELECT id, userfirstname, rating, registrationdate::varchar FROM Users WHERE id=$1`, [userId]);
     return [accountInfo.rows, countWorks.rows, countBWorks.rows, countOrders.rows]
 }
 
-async function getBoughtWorkInfo(dataFromWeb) {
-    var countWorksInfo = {}; countWorksInfo.rows = []
-    if (dataFromWeb.works.length != 0 && dataFromWeb.works.length == 1) {
-        countWorksInfo = await pool.query(`SELECT workName, fileid FROM Works WHERE id IN (` + dataFromWeb.works.join(',') + `) AND fkuserowner != $1;`, [dataFromWeb.userId]);
-    } else if (dataFromWeb.works.length != 0) {
-        countWorksInfo = await pool.query(`SELECT workName, fileid FROM Works WHERE id=$1 AND fkuserowner != $2`, [dataFromWeb.works[0], dataFromWeb.userId]);
-    }
-    for (let i = 0; i < dataFromWeb.works.length; i++) {
-        const countWorks = await pool.query(`SELECT count(id) FROM Works WHERE id=$1`, [dataFromWeb.works[i]]);
-        if (countWorks.rows[0]['count'] != 1) {
-            pool.query(`INSERT INTO boughtworks (workname,fkuserowner,description,price,
-                fkworktypefirst,fkworktypesecond,
-                fileid,adddate, workid, issetfeedback) SELECT workname,$1,description,price,
-                fkworktypefirst,fkworktypesecond,
-                fileid,adddate, $2, false FROM worksdelete WHERE workid=$3 AND fkuserowner != $4`, [dataFromWeb.userId, dataFromWeb.works[i], dataFromWeb.works[i], dataFromWeb.userId]);
-        } else {
-            pool.query(`INSERT INTO boughtworks (workname,fkuserowner,description,price,
-                fkworktypefirst,fkworktypesecond,
-                fileid,adddate, workid, issetfeedback) SELECT workname,$1,description,price,
-                fkworktypefirst,fkworktypesecond,
-                fileid,adddate, $2, false FROM Works WHERE id=$3 AND fkuserowner != $4`, [dataFromWeb.userId, dataFromWeb.works[i], dataFromWeb.works[i], dataFromWeb.userId]);
-        }
-    }
-    return countWorksInfo.rows
-}
-
-async function checkWorksForOwners(dataFromWeb) {
-    var countWorksInfo = {}; countWorksInfo.rows = [];
-    var countWorksB = {}; countWorksB.rows = [];
-    if (dataFromWeb.works.length != 0 && dataFromWeb.works.length != 1) {
-        countWorksInfo = await pool.query(`SELECT count(*) FROM Works WHERE id IN (` + dataFromWeb.works.join(',') + `) AND fkuserowner = $1;`, [dataFromWeb.userId]);
-        countWorksB = await pool.query(`SELECT count(*) FROM boughtworks WHERE workid IN (` + dataFromWeb.works.join(',') + `) AND fkuserowner = $1;`, [dataFromWeb.userId]);
-    } else if (dataFromWeb.works.length != 0) {
-        countWorksInfo = await pool.query(`SELECT count(*) FROM Works WHERE id=$1 AND fkuserowner = $2`, [dataFromWeb.works[0], dataFromWeb.userId]);
-        countWorksB = await pool.query(`SELECT count(*) FROM boughtworks WHERE workid=$1 AND fkuserowner = $2`, [dataFromWeb.works[0], dataFromWeb.userId]);
-    }
-    if (countWorksInfo.rows[0]['count'] != 0 || countWorksB.rows[0]['count'] != 0) {
-        return false
-    }
-    return true
-}
-
-async function getBoughtWorkInfoInChat(userId) {
-    const boughtWorksList = await pool.query(`SELECT id, workname FROM boughtworks WHERE fkuserowner=$1`, [userId]);
-    return boughtWorksList.rows
-}
-
-async function getOneBoughtWorkInfo(workId, userId) {
-    const workInfo = await pool.query(`SELECT w.workName,
-     w.description, w.price, w.fileid, w.workid,wf.worktypename as wtnf, ws.worktypename as wtns, w.adddate::varchar
-      from boughtworks as w LEFT JOIN worktypefirst as wf on wf.id = w.fkworktypefirst 
-      LEFT JOIN worktypesecond as ws on ws.id = w.fkworktypesecond where w.id = $1 and w.fkuserowner = $2`, [workId, userId]);
-    return workInfo.rows
-}
-
-async function deleteWorkFromDelete() {
-    await pool.query(`DELETE FROM worksdelete WHERE deletetime < (NOW() - INTERVAL '1 hour')`, [])
-}
-
-async function setRaitingToWork(workId, rating, userId) {
-    try {
-        var n = Number(rating)
-        if (n >= 1 && n <= 5) {
-            pool.query(`call update_work_rating($1,$2,$3)`, [workId, rating, userId])
-        }
-    } catch { }
-}
 
 module.exports = {
-    createUserIfExist, addWork, addDocumentToWork,
-    getAddedWorks, editWork, getWorkInfo, deleteWork, saveCardNumber,
-    getAccountInfo, getBoughtWorkInfo, getBoughtWorkInfoInChat, getOneBoughtWorkInfo,
-    addOrder, getAddedOrders, getOrderInfo, deleteOrder,
-    checkWorksForOwners, deleteWorkFromDelete, setRaitingToWork
+    createUserIfExist, addWork,
+    getAddedWorks, editWork, getWorkInfo, deleteWork,
+    getAccountInfo,
+    addOrder, getAddedOrders, getOrderInfo, deleteOrder
 };

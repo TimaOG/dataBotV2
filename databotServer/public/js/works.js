@@ -97,17 +97,21 @@ function findWorks(pageNumber = 1, isShowAgain = true) {
     $.post("/works/getWorks/" + pageNumber, dataToSend, function (data) {
         for (let i = 0; i < data.answer.length; i++) {
             $('#resultBlock').append(`
-            <div class='col-lg-6 col-12 workBlock '>
-                <h5>` + data.answer[i].workname + ` (` + data.answer[i].adddate + `)</h5>
-                <h6>` + getTruePrice(data.answer[i].price) + `</h6>
-                <div class='row'>
-                    <div class='col-6'>
-                        <button onclick="openWork(` + data.answer[i].id + `)">Подробнее</button>
-                    </div>
-                    <div class='col-6'>
-                        <button
-                            onclick="addWorkFromList(` + data.answer[i].id + `, '` + data.answer[i].workname + `', ` + data.answer[i].price + `)">В корзину
-                        </button>
+            <div class='col-lg-6 col-12 orderBlock'>
+                        <h5>
+                        ` + data.answer[i].workname + `
+                        </h5>
+                        <p>
+                        ` +  data.answer[i].description.substr(0, 100) + ` <span style="color: var(--firstColor)" onclick="openWork(` + data.answer[i].id + `)">Подробнее...</span>
+                        </p>
+                        <div>
+                            <div style="float: left;">
+                                <h6>
+                                    До ` + data.answer[i].adddate + ` 
+                                </h6>
+                            </div>
+                            <div style="float: right;">
+                        <h6>` + getTruePrice(data.answer[i].price) + `</h6>
                     </div>
                 </div>
             </div>
@@ -163,139 +167,6 @@ function openWork(workId) {
     $('#mc').show()
 }
 
-var basketCount = 0;
-var workInBasket = []
-var workInBasketInfo = {}
-var notificationClose;
-$('#addToBasket').on('click', function () {
-    if (workInBasket.indexOf(Number($('#workInfoId').val())) == -1) {
-        basketCount += 1
-        $('#basketCount').html('Корзина ' + basketCount)
-        workInBasket.push(Number($('#workInfoId').val()))
-        workInBasketInfo[Number($('#workInfoId').val())] = { 'price': Number($('#workInfoPrice').html().split(' ')[0]), 'name': $('#workNameInfo').html() }
-        $('#basketBody').append(`
-        <div class="row" id="bw` + Number($('#workInfoId').val()) + `">
-            <hr>
-            <div class="col-6">
-                <p>` + $('#workNameInfo').html() + `</p>
-            </div>
-            <div class="col-3">
-                <p>` + getTruePrice(Number($('#workInfoPrice').html().split(' ')[0])) + `</p>
-            </div>
-            <div class="col-3" style="color: red;">
-                <p onclick="deleteFromBasket(`+ Number($('#workInfoId').val()) + `)">Удалить</p>
-            </div>
-            <hr>
-        </div>
-        `)
-        countTotalPriceForBasket()
-        clearTimeout(notificationClose);
-        var blockHidden = document.getElementById('notification');
-        blockHidden.classList.add('b-show');
-        notificationClose = setTimeout(hideNotification, 2000)
-    }
-})
-
-function addWorkFromList(workId, workName, workPrice) {
-    if (workInBasket.indexOf(workId) == -1) {
-        basketCount += 1
-        workInBasket.push(workId)
-        workInBasketInfo[workId] = { 'price': workPrice, 'name': workName }
-        $('#basketCount').html('Корзина ' + basketCount)
-        $('#basketBody').append(`
-        <div class="row" id="bw` + workId + `">
-            <hr>
-            <div class="col-6">
-                <p>` + workName + `</p>
-            </div>
-            <div class="col-3">
-                <p>` + getTruePrice(workPrice) + `</p>
-            </div>
-            <div class="col-3" style="color: red;">
-                <p onclick="deleteFromBasket(`+ workId + `)">Удалить</p>
-            </div>
-            <hr>
-        </div>
-        `)
-        countTotalPriceForBasket()
-        clearTimeout(notificationClose);
-        var blockHidden = document.getElementById('notification');
-        blockHidden.classList.add('b-show');
-        notificationClose = setTimeout(hideNotification, 2000)
-    }
-}
-
-function deleteFromBasket(workId) {
-    if (confirm("Вы уверены?")) {
-        if (workInBasket.indexOf(workId) != -1) {
-            basketCount -= 1
-            $('#basketCount').html('Корзина ' + basketCount)
-            workInBasket = removeItemOnce(workInBasket, workId);
-            delete workInBasketInfo[workId]
-            $("#bw" + workId).remove();
-        }
-    }
-    countTotalPriceForBasket()
-}
-
-function removeItemOnce(arr, value) {
-    var index = arr.indexOf(value);
-    if (index > -1) {
-        arr.splice(index, 1);
-    }
-    return arr;
-}
-
-$('#clearBasket').on('click', function () {
-    if (confirm("Вы уверены?")) {
-        basketCount = 0
-        $('#basketCount').html('Корзина ' + basketCount)
-        workInBasket = []
-        workInBasketInfo = {}
-        $("#basketBody").empty();
-
-    }
-    countTotalPriceForBasket()
-})
-
-function countTotalPriceForBasket() {
-    let totalPrice = 0
-    for (let i = 0; i < workInBasket.length; i++) {
-        totalPrice += workInBasketInfo[workInBasket[i]]['price']
-    }
-    $('#totalPriceBasket').html('Итого: ' + totalPrice + ' ₽')
-}
-function hideNotification() {
-    var blockHidden = document.getElementById('notification');
-    blockHidden.classList.remove('b-show');
-}
-
-function basketGetWorks() {
-    $("#paymentsBody").empty();
-    tg.MainButton.show()
-    tg.MainButton.text = "Приобрести"; //изменяем текст кнопки 
-    tg.MainButton.textColor = "#ffffff"; //изменяем цвет текста кнопки
-    tg.MainButton.color = "#E746E0";
-    let totalPrice = 0
-    for (let i = 0; i < workInBasket.length; i++) {
-        totalPrice += workInBasketInfo[workInBasket[i]]['price']
-        $('#paymentsBody').append(`
-        <div class="row">
-            <div class="col-8">
-                <p>` + workInBasketInfo[workInBasket[i]]['name'] + `</p>
-            </div>
-            <div class="col-4">
-                <p>` + getTruePrice(workInBasketInfo[workInBasket[i]]['price']) + `</p>
-            </div>
-        </div>
-        `)
-    }
-    $('#totalPrice').html('Итого: ' + totalPrice + ' ₽')
-    $('#basket').modal("hide")
-    $('#workModal').modal("hide")
-    $('#payments').modal("show")
-}
-
 function getTruePrice(price) {
     if (price == 0) {
         return 'Бесплатно'
@@ -309,9 +180,4 @@ $('#payments').on('hidden.bs.modal', function (e) {
     tg.MainButton.hide()
 })
 
-Telegram.WebApp.onEvent('mainButtonClicked', function () {
-    var dataToSend = {}
-    dataToSend.action = "getWorks"
-    dataToSend.works = workInBasket
-    tg.sendData(JSON.stringify(dataToSend));
-});
+

@@ -58,7 +58,7 @@ async function addedOrderHendlers(msg) {
   return [textToSend, options]
 }
 
-async function showWorkInfo(msg, action, lenCode) {
+async function showWorkInfo(action, lenCode) {
     var locale = wordByCode[lenCode];
     var workId = Number(action.substring(9, action.length))
     const fullWorkInfo = await db.getWorkInfo(workId)
@@ -87,9 +87,8 @@ async function showWorkInfo(msg, action, lenCode) {
         resize_keyboard:true
       }),
       parse_mode: 'HTML',
-      caption: textToSend
     };
-    return [options, true, fullWorkInfo[0][0].fileid, fullWorkInfo[0][0].id]
+    return [textToSend, options]
 }
 
 async function showOrderInfo(msg, action, lenCode) {
@@ -122,50 +121,8 @@ async function showOrderInfo(msg, action, lenCode) {
   return [textToSend, options, fullWorkInfo[0][0].id]
 }
 
-function getTextAndOptions(msg) {
-  var locale = wordByCode[msg.from.language_code];
-  var options = {
-    reply_markup: JSON.stringify({
-      keyboard: [
-        [{ text: locale['AddedWorksList']}],
-        [{ text: locale['Back']}]
-      ],
-      resize_keyboard:true
-    }),
-  };
-  var textToSend = locale['EditHaveDone']
-  return [textToSend, options]
-}
-function getTextAndOptionsDel(msg) {
-  var locale = wordByCode[msg.from.language_code];
-  var options = {
-    reply_markup: JSON.stringify({
-      keyboard: [
-        [{ text: locale['AddedWorksList']}],
-        [{ text: locale['Back']}]
-      ],
-      resize_keyboard:true
-    }),
-  };
-  var textToSend = locale['DeleteHaveDone']
-  return [textToSend, options]
-}
-function getTextAndOptionsDelOrder(msg) {
-  var locale = wordByCode[msg.from.language_code];
-  var options = {
-    reply_markup: JSON.stringify({
-      keyboard: [
-        [{ text: locale['AddedOrdersList']}],
-        [{ text: locale['Back']}]
-      ],
-      resize_keyboard:true
-    }),
-  };
-  var textToSend = locale['DeleteHaveDone']
-  return [textToSend, options]
-}
 
 
 
-module.exports = { addedWorkHendlers, showWorkInfo, getTextAndOptions,
-   getTextAndOptionsDel, addedOrderHendlers, showOrderInfo, getTextAndOptionsDelOrder };
+module.exports = { addedWorkHendlers, showWorkInfo, 
+   addedOrderHendlers, showOrderInfo };

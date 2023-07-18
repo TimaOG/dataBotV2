@@ -97,11 +97,11 @@ function findWorks(pageNumber = 1, isShowAgain = true) {
     $.post("/works/getWorks/" + pageNumber, dataToSend, function (data) {
         for (let i = 0; i < data.answer.length; i++) {
             $('#resultBlock').append(`
-            <div class='col-lg-6 col-12 orderBlock'>
+            <div class='col-lg-4 col-12 orderBlock'>
                         <h5>
                         ` + data.answer[i].workname + `
                         </h5>
-                        <p>
+                        <p style="height: 50%;">
                         ` +  data.answer[i].description.substr(0, 100) + ` <span style="color: var(--firstColor)" onclick="openWork(` + data.answer[i].id + `)">Подробнее...</span>
                         </p>
                         <div>
@@ -176,8 +176,5 @@ function getTruePrice(price) {
     }
 }
 
-$('#payments').on('hidden.bs.modal', function (e) {
-    tg.MainButton.hide()
-})
 
 

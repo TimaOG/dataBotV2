@@ -80,11 +80,11 @@
             <input type="hidden" value="1" id="pageNumber" />
             <div class='resultBlock row' id="resultBlock">
                 <% orders.forEach((order)=> { %>
-                    <div class='col-lg-6 col-12 orderBlock'>
+                    <div class='col-lg-4 col-12 orderBlock'>
                         <h5>
                             <%= order.ordername %>
                         </h5>
-                        <p>
+                        <p style="height: 50%;">
                             <%= order.description.substr(0, 100) %> <span style="color: var(--firstColor)" onclick="openOrder(<%= order.id %>)">Подробнее...</span>
                         </p>
                         <div>

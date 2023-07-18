@@ -87,11 +87,16 @@ textarea {
     margin-top: 20px !important;
     border-radius: 5px;
     background-color: var(--fourthColor);
-    padding-top: 10px;
-    padding-bottom: 10px;
+    /* padding-top: 10px;
+    padding-bottom: 10px; */
     height: 170px;
-
+    padding: 10px;
     color: var(--fontColor);
+}
+
+@media only screen and (min-width: 960px) {
+  .orderBlock {
+  }
 }
 
 

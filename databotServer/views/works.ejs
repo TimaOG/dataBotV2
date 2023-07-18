@@ -89,29 +89,32 @@
             <input type="hidden" value="1" id="pageNumber" />
             <div class='resultBlock row' id="resultBlock">
                 <% works.forEach((work)=> { %>
-                    <div class='col-lg-6 col-12 orderBlock'>
-                        <h5>
-                            <%= work.workname %>
-                        </h5>
-                        <p>
-                            <%= work.description.substr(0, 100) %> <span style="color: var(--firstColor)" onclick="openWork(<%= work.id %>)">Подробнее...</span>
-                        </p>
-                        <div>
-                            <div style="float: left;">
-                                <h6>
-                                    До <%= work.adddate %>
-                                </h6>
-                            </div>
-                            <div style="float: right;">
-                                <h6>
-                                    <% if(work.price == 0){ %>
-                                        Бесплатно
-                                      <% } else{ %>
-                                        <%= String(work.price)%> ₽
-                                      <% } %>
-                                </h6>
-                            </div>
+                    <div class='col-lg-4 col-12 '>
+                        <div class="orderBlock">
+                            <h5>
+                                <%= work.workname %>
+                            </h5>
+                            <p style="height: 50%;">
+                                <%= work.description.substr(0, 100) %> <span style="color: var(--firstColor)" onclick="openWork(<%= work.id %>)">Подробнее...</span>
+                            </p>
+                            <div>
+                                <div style="float: left;">
+                                    <h6>
+                                        До <%= work.adddate %>
+                                    </h6>
+                                </div>
+                                <div style="float: right;">
+                                    <h6>
+                                        <% if(work.price == 0){ %>
+                                            Бесплатно
+                                          <% } else{ %>
+                                            <%= String(work.price)%> ₽
+                                          <% } %>
+                                    </h6>
+                                </div>
                         </div>
+                        </div>
+                            
                     </div>
                     <% }) %>
             </div>

@@ -12,13 +12,97 @@ body {
     font-family: 'Open Sans', sans-serif !important;
 }
 
+.header {
+  padding: 20px 0;
+}
+
+.header {
+  background: #28293E;
+  padding: 15px 0;
+  box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
+}
+
+.header .logo {
+  line-height: 0;
+}
+
+.header .logo span {
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #E746E0;
+  font-family: "Nunito", sans-serif;
+  margin-top: 3px;
+}
+
+/*--------------------------------------------------------------
+# Navigation Menu
+--------------------------------------------------------------*/
+/**
+* Desktop Navigation 
+*/
+.navbar {
+  padding: 0;
+}
+
+.navbar ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+.navbar li {
+  position: relative;
+}
+
+.navbar a,
+.navbar a:focus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0 10px 30px;
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #E746E0;
+  white-space: nowrap;
+  transition: 0.3s;
+}
+
+.navbar a i,
+.navbar a:focus i {
+  font-size: 12px;
+  line-height: 0;
+  margin-left: 5px;
+}
+
+.navbar a:hover,
+.navbar .active,
+.navbar .active:focus,
+.navbar li:hover>a {
+  color: #eb80e5;
+}
+
+
 h5 {
     line-height: 30px !important;
 }
 
 .searchBlock {
-    margin-top: 15px !important;
+    margin-top: 80px !important;
     color: var(--fontColor);
+}
+
+.topPadding {
+  margin-top: 10% ;
+}
+
+@media (min-width:480px)  {
+  .topPadding {
+    margin-top: 20% ;
+  }
 }
 
 .searchBlock input[type="text"],
@@ -69,8 +153,6 @@ textarea {
 
 .resultBlock {
     margin-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 .resultBlock button {
@@ -87,18 +169,10 @@ textarea {
     margin-top: 20px !important;
     border-radius: 5px;
     background-color: var(--fourthColor);
-    /* padding-top: 10px;
-    padding-bottom: 10px; */
     height: 170px;
     padding: 10px;
     color: var(--fontColor);
 }
-
-@media only screen and (min-width: 960px) {
-  .orderBlock {
-  }
-}
-
 
 .orderBlock h5 {
     height: 20%;
@@ -347,5 +421,8 @@ textarea {
       transform: translate(0, 0);
     }
   }
+
+
+  
   
   

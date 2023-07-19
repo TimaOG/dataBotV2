@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/bootstrap-icons.css" rel="stylesheet">
     <title>React App</title>
 </head>
 
@@ -31,13 +32,26 @@
         </div>
     </div>
     <div id="root">
+        <header id="header" class="header fixed-top" style="margin-bottom: 40px;">
+            <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+        
+              <a class="logo d-flex align-items-center" style="text-decoration: none;">
+                <span>All works</span>
+              </a>
+        
+              <nav id="navbar" class="navbar">
+                <ul>
+                  <li><a class="nav-link" href="../orders">Заказы</a></li>
+                </ul>
+              </nav>
+        
+            </div>
+          </header>
         <div class='container'>
-            <div class='searchBlock row' style="margin-top: 5% !important; ">
-                <div class='col-lg-12 col-12'>
+            <div class='searchBlock row' id="filters">
+                <div class='col-lg-12 col-12' style="margin-bottom: 20px;">
                     <input type='text' id="workName" placeholder='Поиск..' />
                 </div>
-            </div>
-            <div class='searchBlock row' id="filters">
                 <div class='col-lg-6 col-6'>
                     <select id="firstCategory">
                         <option value="0">Категория</option>
@@ -89,13 +103,13 @@
             <input type="hidden" value="1" id="pageNumber" />
             <div class='resultBlock row' id="resultBlock">
                 <% works.forEach((work)=> { %>
-                    <div class='col-lg-4 col-12 '>
-                        <div class="orderBlock">
+                    <div class='col-lg-4 col-12 suka'>
+                        <div class="orderBlock ">
                             <h5>
                                 <%= work.workname %>
                             </h5>
                             <p style="height: 50%;">
-                                <%= work.description.substr(0, 100) %> <span style="color: var(--firstColor)" onclick="openWork(<%= work.id %>)">Подробнее...</span>
+                                <%= work.description.substr(0, 100) %> <span style="color: var(--firstColor); cursor: pointer;" onclick="openWork(<%= work.id %>)">Подробнее...</span>
                             </p>
                             <div>
                                 <div style="float: left;">

@@ -7,6 +7,8 @@ var workHasGet = 20
 let tg = window.Telegram.WebApp;
 //alert(tg.initDataUnsafe.user.first_name)
 //tg.MainButton.show()
+
+
 tg.expand()
 
 slider.oninput = function () {
@@ -97,20 +99,21 @@ function findWorks(pageNumber = 1, isShowAgain = true) {
     $.post("/works/getWorks/" + pageNumber, dataToSend, function (data) {
         for (let i = 0; i < data.answer.length; i++) {
             $('#resultBlock').append(`
-            <div class='col-lg-4 col-12 orderBlock'>
-                        <h5>
-                        ` + data.answer[i].workname + `
-                        </h5>
-                        <p style="height: 50%;">
-                        ` +  data.answer[i].description.substr(0, 100) + ` <span style="color: var(--firstColor)" onclick="openWork(` + data.answer[i].id + `)">Подробнее...</span>
-                        </p>
-                        <div>
-                            <div style="float: left;">
-                                <h6>
-                                    До ` + data.answer[i].adddate + ` 
-                                </h6>
-                            </div>
-                            <div style="float: right;">
+            <div class='col-lg-4 col-12'>
+                <div class='orderBlock'>
+                    <h5>
+                    ` + data.answer[i].workname + `
+                    </h5>
+                    <p style="height: 50%;">
+                    ` +  data.answer[i].description.substr(0, 100) + ` <span style="color: var(--firstColor); cursor: pointer;" onclick="openWork(` + data.answer[i].id + `)">Подробнее...</span>
+                    </p>
+                    <div>
+                        <div style="float: left;">
+                            <h6>
+                                До ` + data.answer[i].adddate + ` 
+                            </h6>
+                        </div>
+                        <div style="float: right;">
                         <h6>` + getTruePrice(data.answer[i].price) + `</h6>
                     </div>
                 </div>

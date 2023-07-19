@@ -87,14 +87,15 @@ function findOrders(pageNumber = 1, isShowAgain=true) {
     $.post("/orders/getOrders/" + pageNumber, dataToSend, function (data) {
         for (let i = 0; i < data.answer.length; i++) {
             $('#resultBlock').append(`
-            <div class='col-lg-4 col-12 orderBlock'>
-                <h5>
-                    ` + data.answer[i].ordername + `
-                </h5>
-                <p style="height: 50%;">
-                    ` + data.answer[i].description.substr(0, 100) + `. <span style="color: var(--firstColor)" onclick="openOrder(` + data.answer[i].id + `)">Подробнее...</span>
-                </p>
-                <div>
+            <div class='col-lg-4 col-12'>
+                <div class='orderBlock'>
+                    <h5>
+                        ` + data.answer[i].ordername + `
+                    </h5>
+                    <p style="height: 50%;">
+                        ` + data.answer[i].description.substr(0, 100) + `. <span style="color: var(--firstColor); cursor: pointer;" onclick="openOrder(` + data.answer[i].id + `)">Подробнее...</span>
+                    </p>
+                    <div>
                     <div style="float: left;">
                         <h6>
                             До ` + data.answer[i].adddate + `
@@ -106,6 +107,7 @@ function findOrders(pageNumber = 1, isShowAgain=true) {
                             </h6>
                         </div>
                     </div>
+                </div>
             </div>
         `)
         }

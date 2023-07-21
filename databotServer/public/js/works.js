@@ -105,7 +105,7 @@ function findWorks(pageNumber = 1, isShowAgain = true) {
                     ` + data.answer[i].workname + `
                     </h5>
                     <p style="height: 50%;">
-                    ` +  data.answer[i].description.substr(0, 100) + ` <span style="color: var(--firstColor); cursor: pointer;" onclick="openWork(` + data.answer[i].id + `)">Подробнее...</span>
+                    ` + data.answer[i].description.substr(0, 100) + ` <span style="color: var(--firstColor); cursor: pointer;" onclick="openWork(` + data.answer[i].id + `)">Подробнее...</span>
                     </p>
                     <div>
                         <div style="float: left;">
@@ -153,11 +153,6 @@ function openWork(workId) {
         }
         $('#workInfoTagPlace').empty()
         $('#userLink').attr('href', 'https://t.me/' + data.workInfo[0].username)
-        if (data.workInfo[0].cansendmessage) {
-            $('#canWrite').show()
-        } else {
-            $('#canWrite').hide()
-        }
         for (let i = 0; i < data.workTags.length; i++) {
             $('#workInfoTagPlace').append(`
             <div class="col-auto tagParentBlockModal">

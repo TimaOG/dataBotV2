@@ -6,8 +6,8 @@ const { server } = require('./config.js')
 
 app.get('/works', async (req, res) => {
     const works = await pool.query('SELECT id, workName, price,description ,adddate::varchar from works limit 20', []);
-    const worksTypesFirst = await pool.query('SELECT id, worktypename from worktypefirst ', []);
-    const worksTypesSecond = await pool.query('SELECT id, worktypename, fkfirsttype from worktypesecond ', []);
+    const worksTypesFirst = await pool.query('SELECT id, worktypename from worktypefirst order by worktypename asc', []);
+    const worksTypesSecond = await pool.query('SELECT id, worktypename, fkfirsttype from worktypesecond order by worktypename asc', []);
     const allCount = await pool.query('SELECT count(id) from works ', []);
     res.render("works.ejs", { works: works.rows, worksTypesFirst: worksTypesFirst.rows, worksTypesSecond: worksTypesSecond.rows, allCount: allCount.rows[0]['count'] })
 });
@@ -15,8 +15,8 @@ app.get('/works', async (req, res) => {
 
 app.get('/orders', async (req, res) => {
     const orders = await pool.query('SELECT id, orderName, price, description ,adddate::varchar from orders limit 20', []);
-    const worksTypesFirst = await pool.query('SELECT id, worktypename from worktypefirst ', []);
-    const worksTypesSecond = await pool.query('SELECT id, worktypename, fkfirsttype from worktypesecond ', []);
+    const worksTypesFirst = await pool.query('SELECT id, worktypename from worktypefirst order by worktypename asc', []);
+    const worksTypesSecond = await pool.query('SELECT id, worktypename, fkfirsttype from worktypesecond order by worktypename asc', []);
     const allCount = await pool.query('SELECT count(id) from orders ', []);
     res.render("orders.ejs", { orders: orders.rows, worksTypesFirst: worksTypesFirst.rows, worksTypesSecond: worksTypesSecond.rows, allCount: allCount.rows[0]['count'] })
 });
@@ -83,8 +83,8 @@ app.get('/orders/addOrder', async (req, res) => {
 server.listen(3000, 'allworksbot.localhost', () => {
     console.log('Server started on https://allworksbot.localhost:3000/works');
 });
-// server.listen(3000, '192.168.1.84',() => {
-//     console.log('Server started on https://192.168.1.84:3000/works');
+// server.listen(3000, '192.168.1.96',() => {
+//     console.log('Server started on https://192.168.1.96:3000/works');
 // });
 
 

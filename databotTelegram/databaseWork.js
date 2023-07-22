@@ -107,7 +107,7 @@ async function getAccountInfo(userId) {
 }
 
 async function savePhotoPathToWork(path, workId) {
-    pool.query(`UPDATW Works SET filepath = $1 WHERE id=$2`, [path, workId]);
+    pool.query(`UPDATE Works SET filepath = $1 WHERE id=$2`, [path, workId]);
 }
 
 

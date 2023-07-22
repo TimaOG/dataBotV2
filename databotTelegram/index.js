@@ -2,11 +2,12 @@ const TelegramBot = require('node-telegram-bot-api');
 const db = require("./databaseWork.js")
 const { wordByCode } = require('./translate.js');
 fs = require('fs');
+const http = require('https');
 const keyboards = require('./keyboards.js');
 const hendlerAddWork = require('./hendlers/addWorkHendler.js')
 const hendlerAccount = require('./hendlers/accountHendler.js')
 const hendlerAddedWork = require('./hendlers/addedWorkHendler.js')
-const request = require('request');
+var request = require('request');
 const token = '6134658081:AAGbJbKVwWxtpuC8lE22AIVS-CEzUbc_SKE';
 
 function clearUpdates() {
@@ -115,14 +116,43 @@ bot.on('message', async (msg) => {
       options = keyboards.getKeyboard('startBoard', msg.from.language_code)
     }
   }
-  else if (msg.photo && msg.photo[0] && (msg.from.id in userFilesArray)) {
+  else if (msg.document && msg.document && (msg.from.id in userFilesArray)) {
     textToSend = locale['Save']
     options = keyboards.getKeyboard('startBoard', msg.from.language_code)
-    var df = bot.downloadFile(msg.photo[0].file_id, "upload/")
-    df.then((realPath) => {
-      db.savePhotoPathToWork(realPath, userFilesArray[msg.from.id])
-      console.log(realPath);
+    var df = await bot.getFile(msg.document.file_id)
+    var isCanDownload = false
+    var url = `https://api.telegram.org/file/bot${token}/${df.file_path}`;
+    var magic = {
+      jpg: 'ffd8ffe0',
+      png: '89504e47',
+      gif: '47494638'
+    };
+    var options1 = {
+      method: 'GET',
+      url: url,
+      encoding: null 
+    };
+    var request1 = require('request');
+    request1(options1, function (err, response, body) {
+      if (!err && response.statusCode == 200) {
+        var magigNumberInBody = body.toString('hex', 0, 4);
+        if (magigNumberInBody == magic.jpg ||
+          magigNumberInBody == magic.png ||
+          magigNumberInBody == magic.gif) {
+            isCanDownload = true
+        }
+      }
     });
+    if (df.file_size <= 2097152 && isCanDownload) { //ограничение в 2 мегабайта
+      const file = fs.createWriteStream(df.file_path.split('/')[1]);
+      const request = http.get(`https://api.telegram.org/file/bot${token}/${df.file_path}`, function (response) {
+        response.pipe(file);
+        file.on("finish", () => {
+          file.close();
+        });
+      });
+      delete userFilesArray[msg.from.id]
+    }
     delete userFilesArray[msg.from.id]
   }
   else {
@@ -134,6 +164,7 @@ bot.on('message', async (msg) => {
     console.log(err)
   }
 });
+
 
 bot.on("callback_query", async function (callbackQuery) {
   const action = callbackQuery.data;

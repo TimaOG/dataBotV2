@@ -26,6 +26,7 @@ async function addWork(workInfo) {
                 [workInfo.tags[i], workId])
         }
     }
+    return workIdArr
 }
 
 async function addOrder(orderInfo) {
@@ -101,15 +102,18 @@ async function getOrderInfo(workId) {
 async function getAccountInfo(userId) {
     const countWorks = await pool.query(`SELECT count(id) FROM Works WHERE fkuserowner=$1`, [userId]);
     const countOrders = await pool.query(`SELECT count(id) FROM Orders WHERE fkuserowner=$1`, [userId]);
-    const countBWorks = await pool.query(`SELECT count(id) FROM boughtworks WHERE fkuserowner=$1`, [userId]);
     const accountInfo = await pool.query(`SELECT id, userfirstname, rating, registrationdate::varchar FROM Users WHERE id=$1`, [userId]);
-    return [accountInfo.rows, countWorks.rows, countBWorks.rows, countOrders.rows]
+    return [accountInfo.rows, countWorks.rows,  countOrders.rows]
+}
+
+async function savePhotoPathToWork(path, workId) {
+    pool.query(`UPDATW Works SET filepath = $1 WHERE id=$2`, [path, workId]);
 }
 
 
 module.exports = {
     createUserIfExist, addWork,
     getAddedWorks, editWork, getWorkInfo, deleteWork,
-    getAccountInfo,
+    getAccountInfo, savePhotoPathToWork,
     addOrder, getAddedOrders, getOrderInfo, deleteOrder
 };

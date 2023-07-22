@@ -9,7 +9,7 @@ async function accountHendlers(msg) {
   textToSend += '<b>' + locale['YourName'] + "</b> - " + accountInfo[0][0]['userfirstname'] + "\n";
   textToSend += '<b>' + locale['YourRating'] + "</b> - " + accountInfo[0][0]['rating'] + "\n"
   textToSend += '<b>' + locale['YourRegDate'] + "</b> - " + accountInfo[0][0]['registrationdate'] + "\n"
-  textToSend += '<b>' + locale['AddedOrdersList'] + "</b> - " + accountInfo[3][0]['count'] + "\n"
+  textToSend += '<b>' + locale['AddedOrdersList'] + "</b> - " + accountInfo[2][0]['count'] + "\n"
   textToSend += '<b>' + locale['CountOfAddedWorks'] + "</b> - " + accountInfo[1][0]['count'] + "\n"
   var options = keyboards.getKeyboard('startBoard', msg.from.language_code)
   return [textToSend, options]

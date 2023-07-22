@@ -18,6 +18,17 @@ function getKeyboard(boardName, localCode) {
             parse_mode:"HTML"
         };
     }
+    else if (boardName == 'addWorkBoard') {
+        var options = {
+            reply_markup: JSON.stringify({
+                keyboard: [
+                    [{ text: locale['Back'] }],
+                ],
+                resize_keyboard: true,
+            }),
+            parse_mode:"HTML"
+        };
+    }
     return options
 }
 

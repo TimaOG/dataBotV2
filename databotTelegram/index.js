@@ -1,6 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 const db = require("./databaseWork.js")
 const { wordByCode } = require('./translate.js');
+fs = require('fs');
 const keyboards = require('./keyboards.js');
 const hendlerAddWork = require('./hendlers/addWorkHendler.js')
 const hendlerAccount = require('./hendlers/accountHendler.js')
@@ -45,6 +46,7 @@ function throttler(waitTime) {
 const throttle = throttler(0.5)
 var currentWorkArray = {}
 var currentOrderArray = {}
+var userFilesArray = {}
 
 bot.on('message', async (msg) => {
   var locale = wordByCode[msg.from.language_code];
@@ -57,6 +59,7 @@ bot.on('message', async (msg) => {
   if (msg.text == '/start' || msg.text == locale['Back']) {
     delete currentWorkArray[msg.from.id]
     delete currentOrderArray[msg.from.id]
+    delete userFilesArray[msg.from.id]
     db.createUserIfExist(msg.from.first_name, msg.from.id, msg.from.username);
     textToSend = locale['StartMessage']; options = keyboards.getKeyboard('startBoard', msg.from.language_code)
   }
@@ -96,9 +99,9 @@ bot.on('message', async (msg) => {
     var dataFromWeb = JSON.parse(msg?.web_app_data?.data);
     dataFromWeb.userId = msg.from.id
     if (dataFromWeb['action'] == 'addWork') {
-      db.addWork(dataFromWeb)
+      userFilesArray[msg.from.id] = await db.addWork(dataFromWeb)
       textToSend = locale['WorkHaveAdd']
-      options = keyboards.getKeyboard('startBoard', msg.from.language_code)
+      options = keyboards.getKeyboard('addWorkBoard', msg.from.language_code)
     }
     else if (dataFromWeb['action'] == 'editWork') {
       db.editWork(dataFromWeb)
@@ -111,6 +114,16 @@ bot.on('message', async (msg) => {
       textToSend = locale['OrderHaveAdd']
       options = keyboards.getKeyboard('startBoard', msg.from.language_code)
     }
+  }
+  else if (msg.photo && msg.photo[0] && (msg.from.id in userFilesArray)) {
+    textToSend = locale['Save']
+    options = keyboards.getKeyboard('startBoard', msg.from.language_code)
+    var df = bot.downloadFile(msg.photo[0].file_id, "upload/")
+    df.then((realPath) => {
+      db.savePhotoPathToWork(realPath, userFilesArray[msg.from.id])
+      console.log(realPath);
+    });
+    delete userFilesArray[msg.from.id]
   }
   else {
     textToSend = locale['Unknown']; options = {}

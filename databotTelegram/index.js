@@ -120,7 +120,6 @@ bot.on('message', async (msg) => {
     textToSend = locale['Save']
     options = keyboards.getKeyboard('startBoard', msg.from.language_code)
     var df = await bot.getFile(msg.document.file_id)
-    var isCanDownload = false
     var url = `https://api.telegram.org/file/bot${token}/${df.file_path}`;
     var magic = {
       jpg: 'ffd8ffe0',
@@ -130,30 +129,33 @@ bot.on('message', async (msg) => {
     var options1 = {
       method: 'GET',
       url: url,
-      encoding: null 
+      encoding: null
     };
-    var request1 = require('request');
-    request1(options1, function (err, response, body) {
-      if (!err && response.statusCode == 200) {
-        var magigNumberInBody = body.toString('hex', 0, 4);
-        if (magigNumberInBody == magic.jpg ||
-          magigNumberInBody == magic.png ||
-          magigNumberInBody == magic.gif) {
-            isCanDownload = true
-        }
-      }
-    });
-    if (df.file_size <= 2097152 && isCanDownload) { //ограничение в 2 мегабайта
-      const file = fs.createWriteStream(df.file_path.split('/')[1]);
-      const request = http.get(`https://api.telegram.org/file/bot${token}/${df.file_path}`, function (response) {
-        response.pipe(file);
-        file.on("finish", () => {
-          file.close();
+    var fr = df.file_path.split('.')
+    if (fr.length != 0) {
+      var frr = fr[1]
+      var request1 = require('request');
+      if (df.file_size <= 2097152 && (frr == 'png' || frr == 'jpg')) {
+        request1(options1, function (err, response, body) {
+          if (!err && response.statusCode == 200) {
+            var magigNumberInBody = body.toString('hex', 0, 4);
+            if (magigNumberInBody == magic.jpg || magigNumberInBody == magic.png || magigNumberInBody == magic.gif) {
+              const file = fs.createWriteStream('../databotServer/public/upload/' + df.file_path.split('/')[1]);
+              const req = http.get(`https://api.telegram.org/file/bot${token}/${df.file_path}`, function (response) {
+                response.pipe(file);
+                file.on("finish", () => {
+                  file.close();
+                });
+              });
+              delete userFilesArray[msg.from.id]
+            }
+          }
         });
-      });
-      delete userFilesArray[msg.from.id]
+      } else {
+        textToSend = locale['PhotoError']
+        options = keyboards.getKeyboard('addWorkBoard', msg.from.language_code)
+      }
     }
-    delete userFilesArray[msg.from.id]
   }
   else {
     textToSend = locale['Unknown']; options = {}

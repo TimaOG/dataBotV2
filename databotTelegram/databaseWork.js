@@ -98,7 +98,7 @@ async function getOrderInfo(workId) {
 async function getAccountInfo(userId) {
     const countWorks = await pool.query(`SELECT count(id) FROM Works WHERE fkuserowner=$1`, [userId]);
     const countOrders = await pool.query(`SELECT count(id) FROM Orders WHERE fkuserowner=$1`, [userId]);
-    const accountInfo = await pool.query(`SELECT id, userfirstname, rating, registrationdate::varchar FROM Users WHERE id=$1`, [userId]);
+    const accountInfo = await pool.query(`SELECT id, userfirstname, registrationdate::varchar FROM Users WHERE id=$1`, [userId]);
     return [accountInfo.rows, countWorks.rows,  countOrders.rows]
 }
 

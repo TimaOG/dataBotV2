@@ -139,18 +139,6 @@ function openWork(workId) {
         $('#workInfoSecondCategory').html(data.workInfo[0].wtns)
         $('#workInfoData').html(data.workInfo[0].adddate)
         $('#workInfoPrice').html(getTruePrice(data.workInfo[0].price))
-        if (data.workInfo[0].raiting != null) {
-            $('#workRating').html('Рейтинг - ' + data.workInfo[0].raiting)
-            //$('#raitingBlock').show()
-        } else {
-            $('#workRating').html('Нет оценок')
-        }
-        if (data.workInfo[0].raitingcount != null) {
-            $('#workRatingAll').html('Всего оценок - ' + data.workInfo[0].raitingcount)
-            //$('#raitingBlock').show()
-        } else {
-            $('#workRatingAll').html('')
-        }
         if(data.workInfo[0].filepath != null) {
             $('#imgWorkBlock').html('<img src="upload/' + data.workInfo[0].filepath +'" class="imgWork">')
         }

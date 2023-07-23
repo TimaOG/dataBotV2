@@ -1,7 +1,6 @@
 CREATE TABLE public.users (
 	id serial4 NOT NULL,
 	userfirstname varchar(255) NOT NULL,
-	rating int2 NULL,
 	registrationdate date NULL,
 	username varchar NULL,
 	CONSTRAINT users_pkey PRIMARY KEY (id)
@@ -12,7 +11,6 @@ CREATE OR REPLACE FUNCTION public.before_insert_user()
  LANGUAGE plpgsql
 AS $function$
 	begin
-		new.rating = 0;
 		new.registrationDate = NOW();
 		return new;
 	END;
@@ -49,8 +47,6 @@ CREATE TABLE public.works (
 	fkworktypesecond int2 NOT NULL,
 	isfree bool NULL,
 	adddate date NULL,
-	raiting float4 NULL,
-	raitingcount int4 NULL,
 	CONSTRAINT works_pkey PRIMARY KEY (id),
 	CONSTRAINT works_fkuserowner_fkey FOREIGN KEY (fkuserowner) REFERENCES public.users(id),
 	CONSTRAINT works_tasktypefirst_fkey FOREIGN KEY (fkworktypefirst) REFERENCES public.worktypefirst(id),
@@ -87,30 +83,6 @@ CREATE TABLE public.ordertags (
 	CONSTRAINT ordertags_pkey PRIMARY KEY (id),
 	CONSTRAINT ordertags_fkwork_fkey FOREIGN KEY (fkwork) REFERENCES public.orders(id)
 );
-
-
--- CREATE OR REPLACE PROCEDURE public.update_work_rating(IN workidp integer, IN workraiting integer, IN userid integer)
---  LANGUAGE plpgsql
--- AS $procedure$
--- declare
---    	tmpRaiting float;
---    	tmpCount int;
---    	isCan boolean;
--- 	begin
--- 		select issetfeedback into isCan from boughtworks where workid = workIdP and fkuserowner = userId;
--- 		if isCan = false then
--- 		begin
--- 			select raiting into tmpRaiting from works where id = workIdP;
--- 			select raitingcount into tmpCount from works where id = workIdP;
--- 			tmpRaiting = tmpRaiting * tmpCount;
--- 			update works set raiting = ((tmpRaiting + workRaiting) / 
--- 			((select raitingcount from works where id = workIdP)+1)), raitingcount = ((select raitingcount from works where id = workIdP)+1) where id = workIdP;
--- 		end;
--- 		end if;
--- 		update boughtworks set issetfeedback = true where workid = workIdP and fkuserowner = userId;
--- 	END;
--- $procedure$
--- ;
 
 INSERT INTO public.worktypefirst (id, worktypename) VALUES(1, 'Дизайн');
 INSERT INTO public.worktypefirst (id, worktypename) VALUES(2, 'IT и разработка');

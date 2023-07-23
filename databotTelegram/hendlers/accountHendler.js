@@ -7,7 +7,6 @@ async function accountHendlers(msg) {
   const accountInfo = await db.getAccountInfo(msg.from.id)
   var textToSend = '<b>' + locale['YourId'] + "</b> - " + accountInfo[0][0]['id'] + "\n";
   textToSend += '<b>' + locale['YourName'] + "</b> - " + accountInfo[0][0]['userfirstname'] + "\n";
-  textToSend += '<b>' + locale['YourRating'] + "</b> - " + accountInfo[0][0]['rating'] + "\n"
   textToSend += '<b>' + locale['YourRegDate'] + "</b> - " + accountInfo[0][0]['registrationdate'] + "\n"
   textToSend += '<b>' + locale['AddedOrdersList'] + "</b> - " + accountInfo[2][0]['count'] + "\n"
   textToSend += '<b>' + locale['CountOfAddedWorks'] + "</b> - " + accountInfo[1][0]['count'] + "\n"

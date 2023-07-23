@@ -18,12 +18,10 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
         <div class="container">
-            <div class='searchBlock row' style="margin-top: 20px !important;">
-                <div class='col-lg-12 col-12'>
+            <div class='searchBlock row' id="filters" style=" margin-top: 20px !important;">
+                <div class='col-lg-12 col-12' style="margin-bottom: 20px;">
                     <input type='text' id="workName" placeholder='Название..' value="<%= workInfo.workname %>"/>
                 </div>
-            </div>
-            <div class='searchBlock row' id="filters">
                 <div class='col-lg-6 col-6'>
                     <select id="firstCategory">
                         <option value="0">Категория</option>

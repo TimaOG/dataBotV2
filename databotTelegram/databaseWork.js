@@ -58,10 +58,6 @@ async function editWork(workInfo) {
 }
 
 async function deleteWork(workId) {
-    await pool.query(`INSERT INTO worksDelete (workName, fkuserowner, description,
-        price, fkworktypefirst, fkworktypesecond, isfree, fileId, adddate, deleteTime, workId) SELECT
-        workName, fkuserowner, description,
-        price, fkworktypefirst, fkworktypesecond, isfree, fileId, adddate, NOW(), $1 FROM Works where id=$2`, [workId, workId])
     await pool.query(`DELETE FROM workTags WHERE fkwork = $1`, [workId])
     pool.query(`DELETE FROM Works WHERE id = $1`, [workId])
 }

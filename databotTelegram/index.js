@@ -177,7 +177,7 @@ bot.on("callback_query", async function (callbackQuery) {
   if (/addedWork/.test(action)) {
     const res = await hendlerAddedWork.showWorkInfo(action, lenCode)
     options = res[1]; textToSend = res[0]
-    currentWorkArray[callbackQuery.from.id] = res[3]
+    currentWorkArray[callbackQuery.from.id] = res[2]
   }
   else if (/addedOrder/.test(action)) {
     const res = await hendlerAddedWork.showOrderInfo(action, lenCode)

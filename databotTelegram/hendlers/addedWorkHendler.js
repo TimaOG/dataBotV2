@@ -88,7 +88,7 @@ async function showWorkInfo(action, lenCode) {
       }),
       parse_mode: 'HTML',
     };
-    return [textToSend, options]
+    return [textToSend, options, fullWorkInfo[0][0].id]
 }
 
 async function showOrderInfo(action, lenCode) {

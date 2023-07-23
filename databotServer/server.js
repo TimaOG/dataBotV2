@@ -58,7 +58,7 @@ app.get('/orders/orderInfo/:id', async (req, res) => {
 });
 
 app.get('/works/editWork/:id', async (req, res) => {
-    const workInfo = await pool.query(`SELECT id, workName, isfree, cansendmessage ,description, price, fkworktypefirst, fkworktypesecond
+    const workInfo = await pool.query(`SELECT id, workName, isfree, description, price, fkworktypefirst, fkworktypesecond
       from works where id = $1`, [req.params.id]);
     const workTags = await pool.query('SELECT tagname from worktags where fkWork = $1 ', [req.params.id]);
     const worksTypesFirst = await pool.query('SELECT id, worktypename from worktypefirst ', []);

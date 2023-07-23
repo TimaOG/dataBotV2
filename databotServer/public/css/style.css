@@ -95,13 +95,24 @@ h5 {
   color: var(--fontColor);
 }
 
+
 .topPadding {
   margin-top: 10%;
+}
+
+.imgWork {
+  max-height: 250px;
+  margin-bottom: 20px;
 }
 
 @media (min-width:480px) {
   .topPadding {
     margin-top: 20%;
+  }
+}
+@media (max-width:480px) {
+  .imgWork {
+    max-height: 180px;
   }
 }
 

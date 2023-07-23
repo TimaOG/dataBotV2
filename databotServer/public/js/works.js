@@ -151,6 +151,12 @@ function openWork(workId) {
         } else {
             $('#workRatingAll').html('')
         }
+        if(data.workInfo[0].filepath != null) {
+            $('#imgWorkBlock').html('<img src="upload/' + data.workInfo[0].filepath +'" class="imgWork">')
+        }
+        else {
+            $('#imgWorkBlock').html('')
+        }
         $('#workInfoTagPlace').empty()
         $('#userLink').attr('href', 'https://t.me/' + data.workInfo[0].username)
         for (let i = 0; i < data.workTags.length; i++) {

@@ -26,7 +26,7 @@ async function addWork(workInfo) {
                 [workInfo.tags[i], workId])
         }
     }
-    return workIdArr
+    return workId
 }
 
 async function addOrder(orderInfo) {
@@ -82,7 +82,7 @@ async function getAddedOrders(userId) {
 
 async function getWorkInfo(workId) {
     const workInfo = await pool.query(`SELECT w.id, w.workName,
-     w.description, w.price, w.isfree, w.fileid ,wf.worktypename as wtnf, ws.worktypename as wtns, w.adddate::varchar
+     w.description, w.price, w.isfree, wf.worktypename as wtnf, ws.worktypename as wtns, w.adddate::varchar
       from works as w LEFT JOIN worktypefirst as wf on wf.id = w.fkworktypefirst 
       LEFT JOIN worktypesecond as ws on ws.id = w.fkworktypesecond where w.id = $1`, [workId]);
     const workTags = await pool.query('SELECT tagname from worktags where fkWork = $1 ', [workId]);

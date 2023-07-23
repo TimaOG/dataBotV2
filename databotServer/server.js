@@ -37,7 +37,7 @@ app.post('/orders/getOrders/:page', async (req, res) => {
 
 app.get('/works/workInfo/:id', async (req, res) => {
     const workInfo = await pool.query(`SELECT w.id, w.workName, w.fkuserowner,
-     w.description, w.price, w.raiting, w.raitingcount, u.username, wf.worktypename as wtnf, ws.worktypename as wtns, w.adddate::varchar
+     w.description, w.price, w.filepath, w.raiting, w.raitingcount, u.username, wf.worktypename as wtnf, ws.worktypename as wtns, w.adddate::varchar
       from works as w LEFT JOIN worktypefirst as wf on wf.id = w.fkworktypefirst 
       LEFT JOIN worktypesecond as ws on ws.id = w.fkworktypesecond LEFT JOIN Users as u 
       on u.id = w.fkuserowner where w.id = $1`, [req.params.id]);

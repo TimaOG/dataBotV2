@@ -135,7 +135,7 @@ bot.on('message', async (msg) => {
     if (fr.length != 0) {
       var frr = fr[1]
       var request1 = require('request');
-      if (df.file_size <= 2097152 && (frr == 'png' || frr == 'jpg')) {
+      if (df.file_size <= 2097152 && (frr == 'png' || frr == 'jpg' || frr == 'gif')) {
         request1(options1, function (err, response, body) {
           if (!err && response.statusCode == 200) {
             var magigNumberInBody = body.toString('hex', 0, 4);
@@ -147,6 +147,7 @@ bot.on('message', async (msg) => {
                   file.close();
                 });
               });
+              db.savePhotoPathToWork(df.file_path.split('/')[1], userFilesArray[msg.from.id])
               delete userFilesArray[msg.from.id]
             }
           }

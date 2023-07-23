@@ -91,7 +91,7 @@ async function showWorkInfo(action, lenCode) {
     return [textToSend, options]
 }
 
-async function showOrderInfo(msg, action, lenCode) {
+async function showOrderInfo(action, lenCode) {
   var locale = wordByCode[lenCode];
   var workId = Number(action.substring(10, action.length))
   const fullWorkInfo = await db.getOrderInfo(workId)

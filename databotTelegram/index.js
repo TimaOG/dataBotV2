@@ -50,7 +50,8 @@ var currentOrderArray = {}
 var userFilesArray = {}
 
 bot.on('message', async (msg) => {
-  var locale = wordByCode[msg.from.language_code];
+  //var locale = wordByCode[msg.from.language_code];
+  var locale = wordByCode['ru'];
   if (!throttle(msg.chat.id)) {
     bot.sendMessage(msg.chat.id, locale['StopSpam'])
     return
@@ -62,7 +63,7 @@ bot.on('message', async (msg) => {
     delete currentOrderArray[msg.from.id]
     delete userFilesArray[msg.from.id]
     db.createUserIfExist(msg.from.first_name, msg.from.id, msg.from.username);
-    textToSend = locale['StartMessage']; options = keyboards.getKeyboard('startBoard', msg.from.language_code)
+    textToSend = locale['StartMessage']; options = keyboards.getKeyboard('startBoard', 'ru')
   }
   else if (msg.text == locale['Account']) {
     const res = await hendlerAccount.accountHendlers(msg);
@@ -87,13 +88,13 @@ bot.on('message', async (msg) => {
   else if (msg.text == locale['DeleteWork'] && msg.from.id in currentWorkArray) {
     db.deleteWork(currentWorkArray[msg.from.id])
     delete currentWorkArray[msg.from.id]
-    options = keyboards.getKeyboard('startBoard', msg.from.language_code)
+    options = keyboards.getKeyboard('startBoard', 'ru')
     textToSend = locale['DeleteHaveDone']
   }
   else if (msg.text == locale['DeleteOrder'] && msg.from.id in currentOrderArray) {
     db.deleteOrder(currentOrderArray[msg.from.id])
     delete currentOrderArray[msg.from.id]
-    options = keyboards.getKeyboard('startBoard', msg.from.language_code)
+    options = keyboards.getKeyboard('startBoard', 'ru')
     textToSend = locale['DeleteHaveDone']
   }
   else if (msg?.web_app_data?.data) {
@@ -102,23 +103,23 @@ bot.on('message', async (msg) => {
     if (dataFromWeb['action'] == 'addWork') {
       userFilesArray[msg.from.id] = await db.addWork(dataFromWeb)
       textToSend = locale['WorkHaveAdd']
-      options = keyboards.getKeyboard('addWorkBoard', msg.from.language_code)
+      options = keyboards.getKeyboard('addWorkBoard', 'ru')
     }
     else if (dataFromWeb['action'] == 'editWork') {
       db.editWork(dataFromWeb)
       delete currentWorkArray[msg.from.id]
-      options = keyboards.getKeyboard('startBoard', msg.from.language_code)
+      options = keyboards.getKeyboard('startBoard','ru')
       textToSend = locale['EditHaveDone']
     }
     else if (dataFromWeb['action'] == 'addOrder') {
       db.addOrder(dataFromWeb)
       textToSend = locale['OrderHaveAdd']
-      options = keyboards.getKeyboard('startBoard', msg.from.language_code)
+      options = keyboards.getKeyboard('startBoard', 'ru')
     }
   }
   else if (msg.document && msg.document && (msg.from.id in userFilesArray)) {
     textToSend = locale['Save']
-    options = keyboards.getKeyboard('startBoard', msg.from.language_code)
+    options = keyboards.getKeyboard('startBoard', 'ru')
     var df = await bot.getFile(msg.document.file_id)
     var url = `https://api.telegram.org/file/bot${token}/${df.file_path}`;
     var magic = {
@@ -154,7 +155,7 @@ bot.on('message', async (msg) => {
         });
       } else {
         textToSend = locale['PhotoError']
-        options = keyboards.getKeyboard('addWorkBoard', msg.from.language_code)
+        options = keyboards.getKeyboard('addWorkBoard', 'ru')
       }
     }
   }

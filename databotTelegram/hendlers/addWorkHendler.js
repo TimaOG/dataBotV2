@@ -4,7 +4,7 @@ const { siteUrl } = require('../translate.js');
 const keyboards = require('../keyboards.js');
 
 function addWorkHendlers(msg) {
-  var locale = wordByCode[msg.from.language_code];
+  var locale = wordByCode['ru'];
   var textToSend = locale['ChoiseActionWork']
   var options = {
     reply_markup: JSON.stringify({
@@ -19,7 +19,7 @@ function addWorkHendlers(msg) {
 }
 
 function addOrderHendlers(msg) {
-  var locale = wordByCode[msg.from.language_code];
+  var locale = wordByCode['ru'];
   var textToSend = locale['ChoiseAction']
   var options = {
     reply_markup: JSON.stringify({

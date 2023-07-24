@@ -2,7 +2,7 @@ const { wordByCode } = require('./translate.js');
 const {siteUrl} = require('./translate.js'); 
 
 function getKeyboard(boardName, localCode) {
-    var locale = wordByCode[localCode];
+    var locale = wordByCode['ru'];
     var options
     if (boardName == 'startBoard') {
         var options = {

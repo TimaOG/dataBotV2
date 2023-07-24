@@ -1,13 +1,17 @@
 const db = require("../databaseWork.js")
 const {wordByCode} = require('../translate.js');
 const {siteUrl} = require('../translate.js');  
+const keyboards = require('../keyboards.js');
 
 async function addedWorkHendlers(msg) {
-    var locale = wordByCode[msg.from.language_code];
+    var locale = wordByCode['ru'];
     const workList = await db.getAddedWorks(msg.from.id)
+    var forLen = workList.length;
+    if(forLen <= 0) {
+      return [locale['HaveNot'], keyboards.getKeyboard('startBoard')]
+    }
     var textToSend = locale['ChoiseAddedWork']
     var buttons = []; var tmpButtons = [];
-    var forLen = workList.length;
     for(let i=1; i <= forLen; i++) {
       if(i % 2 == 0) {
         tmpButtons.push({text: workList[i-1].workname, callback_data: ('addedWork' + workList[i-1].id)})
@@ -31,11 +35,14 @@ async function addedWorkHendlers(msg) {
 }
 
 async function addedOrderHendlers(msg) {
-  var locale = wordByCode[msg.from.language_code];
+  var locale = wordByCode['ru'];
   const workList = await db.getAddedOrders(msg.from.id)
+  var forLen = workList.length;
+  if(forLen <= 0) {
+    return [locale['HaveNot'], keyboards.getKeyboard('startBoard')]
+  }
   var textToSend = locale['ChoiseAddedOrder']
   var buttons = []; var tmpButtons = [];
-  var forLen = workList.length;
   for(let i=1; i <= forLen; i++) {
     if(i % 2 == 0) {
       tmpButtons.push({text: workList[i-1].ordername, callback_data: ('addedOrder' + workList[i-1].id)})
@@ -59,7 +66,7 @@ async function addedOrderHendlers(msg) {
 }
 
 async function showWorkInfo(action, lenCode) {
-    var locale = wordByCode[lenCode];
+    var locale = wordByCode['ru'];
     var workId = Number(action.substring(9, action.length))
     const fullWorkInfo = await db.getWorkInfo(workId)
     var textToSend = '';
@@ -92,7 +99,7 @@ async function showWorkInfo(action, lenCode) {
 }
 
 async function showOrderInfo(action, lenCode) {
-  var locale = wordByCode[lenCode];
+  var locale = wordByCode['ru'];
   var workId = Number(action.substring(10, action.length))
   const fullWorkInfo = await db.getOrderInfo(workId)
   var textToSend = '';

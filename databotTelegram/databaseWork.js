@@ -1,4 +1,5 @@
 const { Pool } = require('pg')
+var fs = require('fs');
 const pool = new Pool({
     user: "postgres",
     database: "bot",
@@ -59,7 +60,12 @@ async function editWork(workInfo) {
 
 async function deleteWork(workId) {
     await pool.query(`DELETE FROM workTags WHERE fkwork = $1`, [workId])
-    pool.query(`DELETE FROM Works WHERE id = $1`, [workId])
+    const fp = await pool.query(`DELETE FROM Works WHERE id = $1 RETURNING filepath`, [workId])
+    if(fp.rows[0]['filepath'] != null) {
+        try {
+            fs.unlinkSync('../databotServer/public/upload/' + fp.rows[0]['filepath']);
+        } catch {}
+    }
 }
 async function deleteOrder(workId) {
     await pool.query(`DELETE FROM orderTags WHERE fkwork = $1`, [workId])

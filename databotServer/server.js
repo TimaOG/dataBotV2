@@ -3,7 +3,7 @@ const { pool } = require('./config.js');
 const { server } = require('./config.js')
 
 
-
+app.get('/health-check', (req, res) => res.sendStatus(200));
 app.get('/works', async (req, res) => {
     const works = await pool.query('SELECT id, workName, price,description ,adddate::varchar from works limit 20', []);
     const worksTypesFirst = await pool.query('SELECT id, worktypename from worktypefirst order by worktypename asc', []);

@@ -4,10 +4,11 @@ const https = require('https');
 const { Pool } = require('pg')
 const app = express();
 
-const key = fs.readFileSync('server.key');
+//const key = fs.readFileSync('server.key');
 
-const cert = fs.readFileSync('server.cert');
-const server = https.createServer({key: key, cert: cert }, app);
+//const cert = fs.readFileSync('server.cert');
+//const server = https.createServer({key: key, cert: cert }, app);
+//const server = https.createServer(app);
 const pool = new Pool({
     user: "postgres",
     database: "bot",
@@ -22,5 +23,5 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.set('view engine', 'ejs');
 
-module.exports = {app: app, pool: pool, server: server};
+module.exports = {app: app, pool: pool};
   

@@ -80,9 +80,10 @@ app.get('/orders/addOrder', async (req, res) => {
 });
 
 
-server.listen(3000, 'allworksbot.localhost', () => {
-    console.log('Server started on https://allworksbot.localhost:3000/works');
-});
+// server.listen(3000, 'allworksbot.localhost', () => {
+//     console.log('Server started on https://allworksbot.localhost:3000/works');
+// });
+app.listen(3000)
 // server.listen(3000, '192.168.1.96',() => {
 //     console.log('Server started on https://192.168.1.96:3000/works');
 // });

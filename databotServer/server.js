@@ -2,6 +2,7 @@ const { app } = require('./config.js');
 const { pool } = require('./config.js');
 const { server } = require('./config.js')
 const process = require('process');
+const fs = require('fs');
 
 process.on('uncaughtException', function (err) {
     fs.appendFileSync('logs.txt', String(err) + '\n');
@@ -14,13 +15,29 @@ app.get('/', async (req, res) => {
     res.render("index.ejs")
 });
 
-app.get('/agreement', async (req, res) => {
-    res.render("agreement.ejs")
+// app.get('/agreement', async (req, res) => {
+//     res.render("agreement.ejs")
+// });
+app.get('/agreement', function(req, res, next) {
+  var stream = fs.createReadStream('gg.pdf');
+  var filename = "Пользовательское соглашение.pdf"; 
+  filename = encodeURIComponent(filename);
+  res.setHeader('Content-disposition', 'inline; filename="' + filename + '"');
+  res.setHeader('Content-type', 'application/pdf');
+  stream.pipe(res);
 });
+app.get('/confidentiality', function(req, res, next) {
+    var stream = fs.createReadStream('gg.pdf');
+    var filename = "Политика конфеденциальности.pdf"; 
+    filename = encodeURIComponent(filename);
+    res.setHeader('Content-disposition', 'inline; filename="' + filename + '"');
+    res.setHeader('Content-type', 'application/pdf');
+    stream.pipe(res);
+  });
 
-app.get('/', async (req, res) => {
-    res.render("confidentiality.ejs")
-});
+// app.get('/', async (req, res) => {
+//     res.render("confidentiality.ejs")
+// });
 
 app.get('/works', async (req, res) => {
     const works = await pool.query('SELECT id, workName, price,description ,adddate::varchar from works order by id desc limit 20', []);

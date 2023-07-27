@@ -1,11 +1,29 @@
 const { app } = require('./config.js');
 const { pool } = require('./config.js');
 const { server } = require('./config.js')
+const process = require('process');
+
+process.on('uncaughtException', function (err) {
+    fs.appendFileSync('logs.txt', String(err) + '\n');
+});
 
 
 app.get('/health-check', (req, res) => res.sendStatus(200));
+
+app.get('/', async (req, res) => {
+    res.render("index.ejs")
+});
+
+app.get('/agreement', async (req, res) => {
+    res.render("agreement.ejs")
+});
+
+app.get('/', async (req, res) => {
+    res.render("confidentiality.ejs")
+});
+
 app.get('/works', async (req, res) => {
-    const works = await pool.query('SELECT id, workName, price,description ,adddate::varchar from works limit 20', []);
+    const works = await pool.query('SELECT id, workName, price,description ,adddate::varchar from works order by id desc limit 20', []);
     const worksTypesFirst = await pool.query('SELECT id, worktypename from worktypefirst order by worktypename asc', []);
     const worksTypesSecond = await pool.query('SELECT id, worktypename, fkfirsttype from worktypesecond order by worktypename asc', []);
     const allCount = await pool.query('SELECT count(id) from works ', []);
@@ -14,7 +32,7 @@ app.get('/works', async (req, res) => {
 
 
 app.get('/orders', async (req, res) => {
-    const orders = await pool.query('SELECT id, orderName, price, description ,adddate::varchar from orders limit 20', []);
+    const orders = await pool.query('SELECT id, orderName, price, description ,adddate::varchar from orders order by id desc limit 20', []);
     const worksTypesFirst = await pool.query('SELECT id, worktypename from worktypefirst order by worktypename asc', []);
     const worksTypesSecond = await pool.query('SELECT id, worktypename, fkfirsttype from worktypesecond order by worktypename asc', []);
     const allCount = await pool.query('SELECT count(id) from orders ', []);
@@ -80,10 +98,10 @@ app.get('/orders/addOrder', async (req, res) => {
 });
 
 
-// server.listen(3000, 'allworksbot.localhost', () => {
-//     console.log('Server started on https://allworksbot.localhost:3000/works');
-// });
-app.listen(3000)
+server.listen(3000, 'allworksbot.localhost', () => {
+    console.log('Server started on https://allworksbot.localhost:3000/works');
+});
+// app.listen(3000)
 // server.listen(3000, '192.168.1.96',() => {
 //     console.log('Server started on https://192.168.1.96:3000/works');
 // });
@@ -129,7 +147,7 @@ function getSqlRequestWorks(requst, pageNumber) {
         startReq += ' AND w.price IS NOT NULL'
     }
     startReq += (' AND wt.tagname ' + ((requst.tags !== 'null') ? `IN (${createInArr(requst.tags)})` : 'IS NOT NULL'))
-    startReq += ` group by w.id LIMIT 20 OFFSET ` + String(pageNumber * 20)
+    startReq += ` group by w.id order by w.id desc LIMIT 20 OFFSET ` + String(pageNumber * 20)
     return [startReq, argArr]
 }
 
@@ -166,7 +184,7 @@ function getSqlRequestOrders(requst, pageNumber) {
         startReq += ' AND o.price IS NOT NULL'
     }
     startReq += (' AND wt.tagname ' + ((requst.tags !== 'null') ? `IN (${createInArr(requst.tags)})` : 'IS NOT NULL'))
-    startReq += ` group by o.id LIMIT 20 OFFSET ` + String(pageNumber * 20)
+    startReq += ` group by o.id order by o.id desc LIMIT 20 OFFSET ` + String(pageNumber * 20)
     return [startReq, argArr]
 }
 

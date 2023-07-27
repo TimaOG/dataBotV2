@@ -47,6 +47,7 @@ CREATE TABLE public.works (
 	fkworktypesecond int2 NOT NULL,
 	isfree bool NULL,
 	adddate date NULL,
+	filepath varchar,
 	CONSTRAINT works_pkey PRIMARY KEY (id),
 	CONSTRAINT works_fkuserowner_fkey FOREIGN KEY (fkuserowner) REFERENCES public.users(id),
 	CONSTRAINT works_tasktypefirst_fkey FOREIGN KEY (fkworktypefirst) REFERENCES public.worktypefirst(id),

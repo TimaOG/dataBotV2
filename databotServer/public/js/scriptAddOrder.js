@@ -53,6 +53,7 @@ function validate() {
     $('#workPrice').css("border", "")
     $('#workDiscribtion').css("border", "")
     $('#tagValue').css("border", "")
+    $('#workDateTo').css("border", "")
     var isCanSend = true
     if($('#workName').val() == "") {
         $('#workName').css("border", "1px solid red")
@@ -66,8 +67,12 @@ function validate() {
         $('#secondCategory').css("border", "1px solid red")
         isCanSend = false
     }
-    if($('#workPrice').val() == "" && $('#workPrice').val() == "0") {
+    if($('#workPrice').val() == "" || $('#workPrice').val() == "0") {
         $('#workPrice').css("border", "1px solid red")
+        isCanSend = false
+    }
+    if($('#workDateTo').val() == "") {
+        $('#workDateTo').css("border", "1px solid red")
         isCanSend = false
     }
     if($('#workDiscribtion').val() == "") {
@@ -92,6 +97,7 @@ Telegram.WebApp.onEvent('mainButtonClicked', function(){
     dataToSend.firstCategory = $('#firstCategory').val()
     dataToSend.secondCategory = $('#secondCategory').val()
     dataToSend.workPrice = $('#workPrice').val()
+    dataToSend.workDateTo = $('#workDateTo').val()
     var tagList = document.getElementsByClassName('tagToPost');
     var tagListToSend = []
     for(let i = 0; i < tagList.length; i++) {

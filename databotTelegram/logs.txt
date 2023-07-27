@@ -1,0 +1,7 @@
+TypeError: Cannot read properties of undefined (reading 'id')TypeError: Cannot read properties of undefined (reading 'id')TypeError: Cannot read properties of undefined (reading 'id')
+error: bind message supplies 6 parameters, but prepared statement "" requires 7
+error: bind message supplies 6 parameters, but prepared statement "" requires 7
+TypeError: outputBuffer.pipe is not a function
+Error: ENOENT: no such file or directory, open 'https://api.telegram.org/file/bot6134658081:AAGbJbKVwWxtpuC8lE22AIVS-CEzUbc_SKE/documents/file_42.HEIC'
+TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Promise
+TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Promise

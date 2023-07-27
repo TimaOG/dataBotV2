@@ -32,9 +32,9 @@ async function addWork(workInfo) {
 
 async function addOrder(orderInfo) {
     const orderIdArr = await pool.query(`INSERT INTO orders (orderName, fkuserowner, description,
-        price, fkworktypefirst, fkworktypesecond,adddate) VALUES ($1,$2,$3,$4,$5,$6,NOW()) RETURNING id`,
+        price, fkworktypefirst, fkworktypesecond,adddate) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id`,
         [orderInfo.workName, orderInfo.userId, orderInfo.workDiscribtion, orderInfo.workPrice, orderInfo.firstCategory,
-        orderInfo.secondCategory])
+        orderInfo.secondCategory, orderInfo.workDateTo])
     const orderId = orderIdArr.rows[0]["id"];
     if (orderInfo.tags != null) {
         for (let i = 0; i < orderInfo.tags.length; i++) {

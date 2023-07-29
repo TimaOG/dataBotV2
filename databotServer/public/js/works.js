@@ -86,6 +86,7 @@ function findWorks(pageNumber = 1, isShowAgain = true) {
     dataToSend['secondCategory'] = Number($('#secondCategory').val())
     dataToSend['priceTo'] = Number($('#priceTo').val())
     dataToSend['isFree'] = document.getElementById('isFree').checked
+    dataToSend['executor'] = $('#executor').val()
     var tagList = document.getElementsByClassName('tagToPost');
     var tagListToSend = []
     for (let i = 0; i < tagList.length; i++) {

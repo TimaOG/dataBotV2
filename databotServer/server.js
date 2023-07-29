@@ -125,7 +125,7 @@ function getSqlRequestWorks(requst, pageNumber) {
     var iter = 1
     var argArr = []
     var startReq = `SELECT w.id, w.workName, w.price, w.description,w.adddate::varchar FROM works
-     AS w LEFT JOIN worktags AS wt ON wt.fkwork = w.id WHERE w.id IS NOT NULL`
+     AS w LEFT JOIN worktags AS wt ON wt.fkwork = w.id LEFT JOIN users as us ON us.id = w.fkuserowner WHERE w.id IS NOT NULL`
     if (requst.workName !== '') {
         startReq += ` AND w.workname like '%${requst.workName}%'`
     } else {
@@ -158,6 +158,13 @@ function getSqlRequestWorks(requst, pageNumber) {
         iter += 1
     } else {
         startReq += ' AND w.price IS NOT NULL'
+    }
+    if (requst.executor !== '') {
+        startReq += ` AND us.username = $${iter}`
+        argArr.push(requst.executor)
+        iter += 1
+    } else {
+        startReq += ' AND us.username IS NOT NULL'
     }
     startReq += (' AND wt.tagname ' + ((requst.tags !== 'null') ? `IN (${createInArr(requst.tags)})` : 'IS NOT NULL'))
     startReq += ` group by w.id order by w.id desc LIMIT 20 OFFSET ` + String(pageNumber * 20)

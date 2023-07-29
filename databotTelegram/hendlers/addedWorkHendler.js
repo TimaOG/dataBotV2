@@ -1,6 +1,6 @@
 const db = require("../databaseWork.js")
 const {wordByCode} = require('../translate.js');
-const {siteUrl} = require('../translate.js');  
+const {siteUrl} = require('../config.js');  
 const keyboards = require('../keyboards.js');
 
 async function addedWorkHendlers(msg) {

@@ -9,6 +9,8 @@ const key = fs.readFileSync('server.key');
 
 const cert = fs.readFileSync('server.cert');
 const server = https.createServer({key: key, cert: cert }, app);
+
+const isTest = true
 //const server = https.createServer(app);
 const pool = new Pool({
     user: "postgres",
@@ -26,5 +28,5 @@ var favicon = require('serve-favicon');
 app.use(favicon(path.join(__dirname,'public','img','favicon.ico')));
 app.set('view engine', 'ejs');
 
-module.exports = {app: app, pool: pool, server: server};
+module.exports = {app: app, pool: pool, server: server, isTest:isTest};
   

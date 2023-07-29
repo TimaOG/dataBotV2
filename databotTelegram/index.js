@@ -8,7 +8,7 @@ const hendlerAddWork = require('./hendlers/addWorkHendler.js')
 const hendlerAccount = require('./hendlers/accountHendler.js')
 const hendlerAddedWork = require('./hendlers/addedWorkHendler.js')
 var request = require('request');
-const token = '6134658081:AAGbJbKVwWxtpuC8lE22AIVS-CEzUbc_SKE';
+const { token } = require('./config.js');
 const process = require('process');
 
 process.on('uncaughtException', function (err) {

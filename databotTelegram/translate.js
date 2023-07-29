@@ -1,6 +1,3 @@
-const siteUrl = 'https://allworksbot.localhost:3000'
-//const siteUrl = 'https://192.168.1.84:3000'
-
 const existLenCode = ['ru', 'en']
 
 const wordByCode = {
@@ -66,4 +63,4 @@ const wordByCode = {
         'OrderHaveAdd': 'Заказ был добавлен'
     }
 }
-module.exports = { wordByCode:wordByCode, existLenCode:existLenCode, siteUrl:siteUrl };
+module.exports = { wordByCode:wordByCode, existLenCode:existLenCode};

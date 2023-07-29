@@ -1,12 +1,5 @@
-const { Pool } = require('pg')
 var fs = require('fs');
-const pool = new Pool({
-    user: "postgres",
-    database: "bot",
-    password: "root",
-    port: 5432,
-    host: "127.0.0.1",
-});
+const { pool } = require('./config.js');
 
 
 async function createUserIfExist(userFirstName, userId, userName) {

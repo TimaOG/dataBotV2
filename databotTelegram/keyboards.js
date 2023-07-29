@@ -1,5 +1,5 @@
 const { wordByCode } = require('./translate.js');
-const {siteUrl} = require('./translate.js'); 
+const {siteUrl} = require('./config.js'); 
 
 function getKeyboard(boardName, localCode) {
     var locale = wordByCode['ru'];

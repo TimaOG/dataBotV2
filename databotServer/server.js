@@ -1,6 +1,7 @@
 const { app } = require('./config.js');
 const { pool } = require('./config.js');
 const { server } = require('./config.js')
+const { isTest } = require('./config.js')
 const process = require('process');
 const fs = require('fs');
 
@@ -15,11 +16,8 @@ app.get('/', async (req, res) => {
     res.render("index.ejs")
 });
 
-// app.get('/agreement', async (req, res) => {
-//     res.render("agreement.ejs")
-// });
 app.get('/agreement', function(req, res, next) {
-  var stream = fs.createReadStream('gg.pdf');
+  var stream = fs.createReadStream('Agreement.pdf');
   var filename = "Пользовательское соглашение.pdf"; 
   filename = encodeURIComponent(filename);
   res.setHeader('Content-disposition', 'inline; filename="' + filename + '"');
@@ -34,10 +32,6 @@ app.get('/confidentiality', function(req, res, next) {
     res.setHeader('Content-type', 'application/pdf');
     stream.pipe(res);
   });
-
-// app.get('/', async (req, res) => {
-//     res.render("confidentiality.ejs")
-// });
 
 app.get('/works', async (req, res) => {
     const works = await pool.query('SELECT id, workName, price,description ,adddate::varchar from works order by id desc limit 20', []);
@@ -115,13 +109,15 @@ app.get('/orders/addOrder', async (req, res) => {
 });
 
 
-server.listen(3000, 'allworksbot.localhost', () => {
-    console.log('Server started on https://allworksbot.localhost:3000/works');
-});
-// app.listen(3000)
-// server.listen(3000, '192.168.1.96',() => {
-//     console.log('Server started on https://192.168.1.96:3000/works');
-// });
+if(isTest) {
+    server.listen(3000, 'allworksbot.localhost', () => {
+        console.log('Server started on https://allworksbot.localhost:3000/works');
+    });
+}
+else {
+    app.listen(3000)
+}
+
 
 
 function getSqlRequestWorks(requst, pageNumber) {

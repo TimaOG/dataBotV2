@@ -2,3 +2,5 @@ databotServer/node_modules/
 databotTelegram/node_modules/
 databotServer/server.cert
 databotServer/server.key
+databotServer/config.js
+databotTelegram/config.js

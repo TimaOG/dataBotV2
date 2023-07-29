@@ -139,6 +139,7 @@ function openWork(workId) {
         $('#workInfoFistCategory').html(data.workInfo[0].wtnf)
         $('#workInfoSecondCategory').html(data.workInfo[0].wtns)
         $('#workInfoData').html(data.workInfo[0].adddate)
+        $('#executorWork').html('Исполнитель: ' + data.workInfo[0].username)
         $('#workInfoPrice').html(getTruePrice(data.workInfo[0].price))
         if(data.workInfo[0].filepath != null) {
             $('#imgWorkBlock').html('<img src="upload/' + data.workInfo[0].filepath +'" class="imgWork">')

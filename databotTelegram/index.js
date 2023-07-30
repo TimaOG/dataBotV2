@@ -68,7 +68,7 @@ try {
     if (msg.text == '/help') {
       textToSend = locale['HelpMessage']; options = keyboards.getKeyboard('startBoard', 'ru')
     }
-    if (msg.text == '/start' || msg.text == locale['Back']) {
+    else if (msg.text == '/start' || msg.text == locale['Back']) {
       delete currentWorkArray[msg.from.id]
       delete currentOrderArray[msg.from.id]
       delete userFilesArray[msg.from.id]

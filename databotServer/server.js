@@ -25,7 +25,7 @@ app.get('/agreement', function(req, res, next) {
   stream.pipe(res);
 });
 app.get('/confidentiality', function(req, res, next) {
-    var stream = fs.createReadStream('gg.pdf');
+    var stream = fs.createReadStream('privacy-policy.pdf');
     var filename = "Политика конфеденциальности.pdf"; 
     filename = encodeURIComponent(filename);
     res.setHeader('Content-disposition', 'inline; filename="' + filename + '"');

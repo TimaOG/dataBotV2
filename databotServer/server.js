@@ -16,22 +16,30 @@ app.get('/', async (req, res) => {
     res.render("index.ejs")
 });
 
-app.get('/agreement', function(req, res, next) {
-  var stream = fs.createReadStream('Agreement.pdf');
-  var filename = "Пользовательское соглашение.pdf"; 
-  filename = encodeURIComponent(filename);
-  res.setHeader('Content-disposition', 'inline; filename="' + filename + '"');
-  res.setHeader('Content-type', 'application/pdf');
-  stream.pipe(res);
-});
-app.get('/confidentiality', function(req, res, next) {
-    var stream = fs.createReadStream('privacy-policy.pdf');
-    var filename = "Политика конфеденциальности.pdf"; 
+app.get('/agreement', function (req, res, next) {
+    var stream = fs.createReadStream('Agreement.pdf');
+    var filename = "Пользовательское соглашение.pdf";
     filename = encodeURIComponent(filename);
     res.setHeader('Content-disposition', 'inline; filename="' + filename + '"');
     res.setHeader('Content-type', 'application/pdf');
     stream.pipe(res);
-  });
+});
+app.get('/confidentiality', function (req, res, next) {
+    var stream = fs.createReadStream('privacy-policy.pdf');
+    var filename = "Политика конфеденциальности.pdf";
+    filename = encodeURIComponent(filename);
+    res.setHeader('Content-disposition', 'inline; filename="' + filename + '"');
+    res.setHeader('Content-type', 'application/pdf');
+    stream.pipe(res);
+});
+app.get('/guide', function (req, res, next) {
+    var stream = fs.createReadStream('privacy-policy.pdf');
+    var filename = "Политика конфеденциальности.pdf";
+    filename = encodeURIComponent(filename);
+    res.setHeader('Content-disposition', 'inline; filename="' + filename + '"');
+    res.setHeader('Content-type', 'application/pdf');
+    stream.pipe(res);
+});
 
 app.get('/works', async (req, res) => {
     const works = await pool.query('SELECT id, workName, price,description ,adddate::varchar from works order by id desc limit 20', []);
@@ -109,7 +117,7 @@ app.get('/orders/addOrder', async (req, res) => {
 });
 
 
-if(isTest) {
+if (isTest) {
     server.listen(3000, 'allworksbot.localhost', () => {
         console.log('Server started on https://allworksbot.localhost:3000/works');
     });

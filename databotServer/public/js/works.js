@@ -111,7 +111,7 @@ function findWorks(pageNumber = 1, isShowAgain = true) {
                     <div>
                         <div style="float: left;">
                             <h6>
-                                До ` + data.answer[i].adddate + ` 
+                                ` + data.answer[i].adddate + ` 
                             </h6>
                         </div>
                         <div style="float: right;">

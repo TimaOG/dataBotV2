@@ -32,14 +32,6 @@ app.get('/confidentiality', function (req, res, next) {
     res.setHeader('Content-type', 'application/pdf');
     stream.pipe(res);
 });
-app.get('/guide', function (req, res, next) {
-    var stream = fs.createReadStream('privacy-policy.pdf');
-    var filename = "Политика конфеденциальности.pdf";
-    filename = encodeURIComponent(filename);
-    res.setHeader('Content-disposition', 'inline; filename="' + filename + '"');
-    res.setHeader('Content-type', 'application/pdf');
-    stream.pipe(res);
-});
 
 app.get('/works', async (req, res) => {
     const works = await pool.query('SELECT id, workName, price,description ,adddate::varchar from works order by id desc limit 20', []);

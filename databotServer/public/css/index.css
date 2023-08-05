@@ -291,6 +291,7 @@ section {
 
 .hero .hero-img {
   text-align: center;
+  max-height: 500px;
 }
 
 @media (min-width: 1024px) {

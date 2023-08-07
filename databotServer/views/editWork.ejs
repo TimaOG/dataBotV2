@@ -58,6 +58,25 @@
                         <label for="isFree"></label>
                     </div>
                 </div>
+                <div class="col-lg-2 col-10" style="margin-top: 15px; vertical-align: middle;">
+                    <h6 style="display: inline-block;">Использовать свой контакт связи (не telegram)</h6>
+                </div>
+                <div class="col-lg-1 col-1" style="margin-top: 15px; vertical-align: middle;">
+                    <div class="checkbox">
+                        <% if (workInfo.usecontact) { %>
+                            <input type="checkbox" class="input-assumpte" id="useContact" checked/>
+                        <%} else { %>
+                            <input type="checkbox" class="input-assumpte" id="useContact"/>
+                        <% } %>
+                        <label for="useContact"></label>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-4" style="margin-top: 15px; vertical-align: middle; display: none;" id="con1">
+                    <h6 style="display: inline-block;">Контакт свзяи</h6>
+                </div>
+                <div class="col-lg-8 col-8" style="margin-top: 15px; display: none;" id="con2" >
+                    <input type="text" value="<%= workInfo.contact %>" id="contact" placeholder="Почта или номер телефона">
+                </div>
                 <p  style="margin-top: 15px;">Добавьте пару тегов, описывающих работу</p>
                 <div class='col-lg-8 col-8'>
                     <input type='text' id="tagValue" placeholder='Введите тег' />

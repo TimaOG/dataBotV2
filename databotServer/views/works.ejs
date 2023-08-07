@@ -157,6 +157,7 @@
                             <a id="userLink" href=""><button style="width: 70%; margin-bottom: 15px;" class="confimButton" id="canWrite">
                                 Написать исполнителю</button></a>
                             <p style="text-align: justify;" id="executorWork">Исполнитель: </p>
+                            <p style="text-align: justify; color:red" id="claim">Пожаловаться</p>
                             <div style="text-align: center;" id="imgWorkBlock">
                                 <img src="upload/1.jpg" class="imgWork">
                             </div>
@@ -179,6 +180,119 @@
                                 </div>
                             </div>
                             <div class="row" style="margin-top: 15px; vertical-align: middle" id="workInfoTagPlace">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="claimModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="container">
+                            <h5 class="modal-title">Выберите причину</h5>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <hr>
+                                <div class="col-11" style="margin-top: 15px; vertical-align: middle;">
+                                    <h6 style="display: inline-block;">Нецензурная лексика</h6>
+                                </div>
+                                <div class="col-1" style="margin-top: 15px; vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <input type="checkbox" onclick="changeClaim(1)" class="input-assumpte cbClaim" id="badWords"/>
+                                        <label for="badWords"></label>
+                                    </div>
+                                </div>
+                                <div class="col-11" style="margin-top: 15px; vertical-align: middle;">
+                                    <h6 style="display: inline-block;">Оскорбления</h6>
+                                </div>
+                                <div class="col-1" style="margin-top: 15px; vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <input type="checkbox" onclick="changeClaim(2)" class="input-assumpte cbClaim" id="insult"/>
+                                        <label for="insult"></label>
+                                    </div>
+                                </div>
+                                <div class="col-11" style="margin-top: 15px; vertical-align: middle;">
+                                    <h6 style="display: inline-block;">Контент сексуального характера</h6>
+                                </div>
+                                <div class="col-1" style="margin-top: 15px; vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <input type="checkbox" onclick="changeClaim(3)" class="input-assumpte cbClaim" id="sex"/>
+                                        <label for="sex"></label>
+                                    </div>
+                                </div>
+                                <div class="col-11" style="margin-top: 15px; vertical-align: middle;">
+                                    <h6 style="display: inline-block;">Вредные или опасные действия</h6>
+                                </div>
+                                <div class="col-1" style="margin-top: 15px; vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <input type="checkbox" onclick="changeClaim(4)" class="input-assumpte cbClaim" id="danger"/>
+                                        <label for="danger"></label>
+                                    </div>
+                                </div>
+                                <div class="col-11" style="margin-top: 15px; vertical-align: middle;">
+                                    <h6 style="display: inline-block;">Нарушения моих прав</h6>
+                                </div>
+                                <div class="col-1" style="margin-top: 15px; vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <input type="checkbox" onclick="changeClaim(5)" class="input-assumpte cbClaim" id="rights" />
+                                        <label for="rights"></label>
+                                    </div>
+                                </div>
+                                <div class="col-11" style="margin-top: 15px; vertical-align: middle;">
+                                    <h6 style="display: inline-block;">Ложная информация</h6>
+                                </div>
+                                <div class="col-1" style="margin-top: 15px; vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <input type="checkbox" onclick="changeClaim(6)" class="input-assumpte cbClaim" id="lie" />
+                                        <label for="lie"></label>
+                                    </div>
+                                </div>
+                                <div class="col-11" style="margin-top: 15px; vertical-align: middle;">
+                                    <h6 style="display: inline-block;">Плагиат</h6>
+                                </div>
+                                <div class="col-1" style="margin-top: 15px; vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <input type="checkbox" onclick="changeClaim(7)" class="input-assumpte cbClaim" id="plagiarism"/>
+                                        <label for="plagiarism"></label>
+                                    </div>
+                                </div>
+                                <div class="col-11" style="margin-top: 15px; vertical-align: middle;">
+                                    <h6 style="display: inline-block;">Пропаганда терроризма</h6>
+                                </div>
+                                <div class="col-1" style="margin-top: 15px; vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <input type="checkbox" onclick="changeClaim(8)" class="input-assumpte cbClaim" id="terror"/>
+                                        <label for="terror"></label>
+                                    </div>
+                                </div>
+                                <div class="col-11" style="margin-top: 15px; vertical-align: middle;">
+                                    <h6 style="display: inline-block;">Контект нарушающий законы РФ</h6>
+                                </div>
+                                <div class="col-1" style="margin-top: 15px; vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <input type="checkbox" onclick="changeClaim(9)" class="input-assumpte cbClaim" id="ukrf"/>
+                                        <label for="ukrf"></label>
+                                    </div>
+                                </div>
+                                <div class="col-11" style="margin-top: 15px; vertical-align: middle;">
+                                    <h6 style="display: inline-block;">Другое</h6>
+                                </div>
+                                <div class="col-1" style="margin-top: 15px; vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <input type="checkbox" onclick="changeClaim(10)" class="input-assumpte cbClaim" id="otherClaim" />
+                                        <label for="otherClaim"></label>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="margin-top: 25px;">
+                                    <button class="confimButton" style="width: 100% !important;" onclick="sendClaim()">Отправить</button>
+                                </div>
                             </div>
                         </div>
                     </div>

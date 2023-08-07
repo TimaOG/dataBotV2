@@ -33,6 +33,11 @@ app.get('/confidentiality', function (req, res, next) {
     stream.pipe(res);
 });
 
+app.post('/works/claim/:workid/:claimNum', async (req, res) => {
+    pool.query('INSERT INTO Claims (fkwork, claimType) VALUES ($1, $2)', [Number(req.params.workid), Number(req.params.claimNum)])
+    res.status(200).send('Success');
+});
+
 app.get('/works', async (req, res) => {
     const works = await pool.query('SELECT id, workName, price,description ,adddate::varchar from works order by id desc limit 20', []);
     const worksTypesFirst = await pool.query('SELECT id, worktypename from worktypefirst order by worktypename asc', []);
@@ -87,7 +92,8 @@ app.get('/orders/orderInfo/:id', async (req, res) => {
 });
 
 app.get('/works/editWork/:id', async (req, res) => {
-    const workInfo = await pool.query(`SELECT id, workName, isfree, description, price, fkworktypefirst, fkworktypesecond
+    const workInfo = await pool.query(`SELECT id, workName, isfree, description, price, fkworktypefirst, 
+    fkworktypesecond, useContact, contact
       from works where id = $1`, [req.params.id]);
     const workTags = await pool.query('SELECT tagname from worktags where fkWork = $1 ', [req.params.id]);
     const worksTypesFirst = await pool.query('SELECT id, worktypename from worktypefirst ', []);

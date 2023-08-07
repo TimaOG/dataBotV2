@@ -170,5 +170,34 @@ function getTruePrice(price) {
     }
 }
 
+$('#claim').on('click', function () {
+    $('#claimModal').modal('show');
+})
+
+function changeClaim(chNum) {
+    var ch = document.getElementsByClassName('cbClaim')
+    for(let i = 0; i < ch.length; i++) {
+        if(i != (chNum - 1)) {
+            ch[i].checked = false
+        }
+    }
+}
+
+function sendClaim() {
+    var ch = document.getElementsByClassName('cbClaim')
+    var trueNum = -1;
+    var workIdToClaim = $('#workInfoId').val()
+    for(let i = 0; i < ch.length; i++) {
+        if(ch[i].checked) {
+            trueNum = i;
+            break;
+        }
+    }
+    if(trueNum != -1) {
+        $.post("/works/claim/" + workIdToClaim + '/' + trueNum, {}, function (data) {});
+    }
+    $('#claimModal').modal('hide');
+}
+
 
 

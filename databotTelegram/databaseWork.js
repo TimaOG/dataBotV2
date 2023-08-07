@@ -10,9 +10,9 @@ async function createUserIfExist(userFirstName, userId, userName) {
 
 async function addWork(workInfo) {
     const workIdArr = await pool.query(`INSERT INTO Works (workName, fkuserowner, description,
-        price, fkworktypefirst, fkworktypesecond, isfree, adddate) VALUES ($1,$2,$3,$4,$5,$6,$7,NOW()) RETURNING id`,
+        price, fkworktypefirst, fkworktypesecond, isfree, adddate, useContact, contact) VALUES ($1,$2,$3,$4,$5,$6,$7,NOW(), $8, $9) RETURNING id`,
         [workInfo.workName, workInfo.userId, workInfo.workDiscribtion, workInfo.workPrice, workInfo.firstCategory,
-        workInfo.secondCategory, workInfo.isFree])
+        workInfo.secondCategory, workInfo.isFree, workInfo.useContact, workInfo.contact])
     const workId = workIdArr.rows[0]["id"];
     if (workInfo.tags != null) {
         for (let i = 0; i < workInfo.tags.length; i++) {
@@ -39,9 +39,9 @@ async function addOrder(orderInfo) {
 
 async function editWork(workInfo) {
     pool.query(`UPDATE Works SET workName = $1, description = $2, price = $3, 
-    fkworktypefirst = $4, fkworktypesecond = $5, isfree = $6 WHERE id = $7 AND fkuserowner = $8`,
+    fkworktypefirst = $4, fkworktypesecond = $5, isfree = $6, useContact = $7, contact = $8 WHERE id = $9 AND fkuserowner = $10`,
         [workInfo.workName, workInfo.workDiscribtion, workInfo.workPrice, workInfo.firstCategory,
-        workInfo.secondCategory, workInfo.isFree, workInfo.id, workInfo.userId])
+        workInfo.secondCategory, workInfo.isFree, workInfo.useContact, workInfo.contact, workInfo.id, workInfo.userId])
     await pool.query(`DELETE FROM workTags WHERE fkwork = $1`, [workInfo.id])
     if (workInfo.tags != null) {
         for (let i = 0; i < workInfo.tags.length; i++) {

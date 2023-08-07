@@ -48,6 +48,8 @@ CREATE TABLE public.works (
 	isfree bool NULL,
 	adddate date NULL,
 	filepath varchar,
+	useTelegram bool NULL,
+	contact varchar NULL,
 	CONSTRAINT works_pkey PRIMARY KEY (id),
 	CONSTRAINT works_fkuserowner_fkey FOREIGN KEY (fkuserowner) REFERENCES public.users(id),
 	CONSTRAINT works_tasktypefirst_fkey FOREIGN KEY (fkworktypefirst) REFERENCES public.worktypefirst(id),
@@ -83,6 +85,14 @@ CREATE TABLE public.ordertags (
 	fkwork int4 NULL,
 	CONSTRAINT ordertags_pkey PRIMARY KEY (id),
 	CONSTRAINT ordertags_fkwork_fkey FOREIGN KEY (fkwork) REFERENCES public.orders(id)
+);
+
+CREATE TABLE public.claims (
+	id serial4 NOT NULL,
+	fkwork int4 NULL,
+	claimtype int2 NULL,
+	CONSTRAINT claims_pkey PRIMARY KEY (id),
+	CONSTRAINT claims_fkwork_fkey FOREIGN KEY (fkwork) REFERENCES public.works(id)
 );
 
 INSERT INTO public.worktypefirst (id, worktypename) VALUES(1, 'Дизайн');

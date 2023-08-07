@@ -103,6 +103,17 @@ function validate() {
     return isCanSend
 }
 
+$('#useContact').on('change', function () {
+    if(document.getElementById('useContact').checked) {
+        $('#con1').css('display', 'block')
+        $('#con2').css('display', 'block')
+    } else {
+        $('#con1').css('display', 'none')
+        $('#con2').css('display', 'none')
+        $('#contact').val("")
+    }
+})
+
 Telegram.WebApp.onEvent('mainButtonClicked', function(){
     if(!validate()) {
         return
@@ -115,6 +126,8 @@ Telegram.WebApp.onEvent('mainButtonClicked', function(){
     dataToSend.secondCategory = $('#secondCategory').val()
     dataToSend.workPrice = $('#workPrice').val()
     dataToSend.isFree = document.getElementById('isFree').checked
+    dataToSend.useContact = document.getElementById('useContact').checked
+    dataToSend.contact = $('#contact').val()
     var tagList = document.getElementsByClassName('tagToPost');
     var tagListToSend = []
     for(let i = 0; i < tagList.length; i++) {

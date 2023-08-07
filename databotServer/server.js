@@ -71,7 +71,10 @@ app.post('/orders/getOrders/:page', async (req, res) => {
 
 app.get('/works/workInfo/:id', async (req, res) => {
     const workInfo = await pool.query(`SELECT w.id, w.workName, w.fkuserowner,
-     w.description, w.price, w.filepath, u.username, wf.worktypename as wtnf, ws.worktypename as wtns, w.adddate::varchar
+     w.description, w.price, w.filepath, 
+     CASE WHEN w.usecontact is not true THEN u.username WHEN w.usecontact is true THEN '-1' END username, 
+     wf.worktypename as wtnf, 
+     ws.worktypename as wtns, w.adddate::varchar, w.usecontact, w.contact
       from works as w LEFT JOIN worktypefirst as wf on wf.id = w.fkworktypefirst 
       LEFT JOIN worktypesecond as ws on ws.id = w.fkworktypesecond LEFT JOIN Users as u 
       on u.id = w.fkuserowner where w.id = $1`, [req.params.id]);

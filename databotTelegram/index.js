@@ -11,9 +11,9 @@ var request = require('request');
 const { token } = require('./config.js');
 const process = require('process');
 
-// process.on('uncaughtException', function (err) {
-//   fs.appendFileSync('logs.txt', String(err) + '\n');
-// });
+process.on('uncaughtException', function (err) {
+  fs.appendFileSync('logs.txt', String(err) + '\n');
+});
 
 
 function clearUpdates() {

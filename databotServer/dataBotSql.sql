@@ -48,7 +48,7 @@ CREATE TABLE public.works (
 	isfree bool NULL,
 	adddate date NULL,
 	filepath varchar,
-	useTelegram bool NULL,
+	useContact bool NULL,
 	contact varchar NULL,
 	CONSTRAINT works_pkey PRIMARY KEY (id),
 	CONSTRAINT works_fkuserowner_fkey FOREIGN KEY (fkuserowner) REFERENCES public.users(id),

@@ -133,13 +133,21 @@ function openWork(workId) {
     $('#workModal').modal('show');
     $('#loadSpin2').css('visibility', 'visible')
     $.get("/works/workInfo/" + workId, function (data) {
+        console.log(data)
         $('#workInfoId').val(data.workInfo[0].id)
         $('#workNameInfo').html(data.workInfo[0].workname)
         $('#workInfoDescription').html(data.workInfo[0].description)
         $('#workInfoFistCategory').html(data.workInfo[0].wtnf)
         $('#workInfoSecondCategory').html(data.workInfo[0].wtns)
         $('#workInfoData').html(data.workInfo[0].adddate)
-        $('#executorWork').html('Исполнитель: ' + data.workInfo[0].username)
+        if(!data.workInfo[0].usecontact) {
+            $('#userLink').attr('href', 'https://t.me/' + data.workInfo[0].username)
+            $('#userLink').css('display', 'block')
+            $('#executorWork').html('Исполнитель: ' + data.workInfo[0].username)
+        } else {
+            $('#executorWork').html('Контакт связи: ' + data.workInfo[0].contact)
+            $('#userLink').css('display', 'none')
+        }
         $('#workInfoPrice').html(getTruePrice(data.workInfo[0].price))
         if(data.workInfo[0].filepath != null) {
             $('#imgWorkBlock').html('<img src="upload/' + data.workInfo[0].filepath +'" class="imgWork">')
@@ -148,7 +156,6 @@ function openWork(workId) {
             $('#imgWorkBlock').html('')
         }
         $('#workInfoTagPlace').empty()
-        $('#userLink').attr('href', 'https://t.me/' + data.workInfo[0].username)
         for (let i = 0; i < data.workTags.length; i++) {
             $('#workInfoTagPlace').append(`
             <div class="col-auto tagParentBlockModal">

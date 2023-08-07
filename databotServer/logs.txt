@@ -12,3 +12,5 @@ TypeError: cb is not a function
 TypeError: cb is not a function
 TypeError: cb is not a function
 TypeError: cb is not a function
+error: column "-1" does not exist
+error: column "-1" does not exist

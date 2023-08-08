@@ -53,6 +53,7 @@ async function editWork(workInfo) {
 
 async function deleteWork(workId) {
     await pool.query(`DELETE FROM workTags WHERE fkwork = $1`, [workId])
+    await pool.query(`DELETE FROM claims WHERE fkwork = $1`, [workId])
     const fp = await pool.query(`DELETE FROM Works WHERE id = $1 RETURNING filepath`, [workId])
     if(fp.rows[0]['filepath'] != null) {
         try {

@@ -47,15 +47,15 @@ CREATE TABLE public.works (
 	fkworktypesecond int2 NOT NULL,
 	isfree bool NULL,
 	adddate date NULL,
-	filepath varchar,
-	useContact bool NULL,
+	filepath varchar NULL,
+	usecontact bool NULL,
 	contact varchar NULL,
+	workpriority int2 NULL DEFAULT 0,
 	CONSTRAINT works_pkey PRIMARY KEY (id),
 	CONSTRAINT works_fkuserowner_fkey FOREIGN KEY (fkuserowner) REFERENCES public.users(id),
 	CONSTRAINT works_tasktypefirst_fkey FOREIGN KEY (fkworktypefirst) REFERENCES public.worktypefirst(id),
 	CONSTRAINT works_tasktypesecond_fkey FOREIGN KEY (fkworktypesecond) REFERENCES public.worktypesecond(id)
 );
-
 CREATE TABLE public.worktags (
 	id serial4 NOT NULL,
 	tagname varchar NULL,

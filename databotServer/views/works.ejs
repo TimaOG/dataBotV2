@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
     <title>Готовые предложения</title>
 </head>
@@ -156,7 +157,11 @@
                             <p style="text-align: justify;" id="workInfoDescription"></p>
                             <a id="userLink" href=""><button style="width: 70%; margin-bottom: 15px;" class="confimButton" id="canWrite">
                                 Написать исполнителю</button></a>
-                            <p style="text-align: justify;" id="executorWork">Исполнитель: </p>
+                            <div>
+                                <p style="text-align: justify; display: inline;" id="exOrCon">Исполнитель: </p>
+                                <p style="text-align: justify; display: inline;" id="executorWork"></p>
+                                <i class="bi bi-clipboard" id="copyButton" style="display: inline; margin-left: 5px;"></i>
+                            </div>
                             <p style="text-align: justify; color:red" id="claim">Пожаловаться</p>
                             <div style="text-align: center;" id="imgWorkBlock">
                                 <img src="upload/1.jpg" class="imgWork">

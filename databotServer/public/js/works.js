@@ -133,7 +133,6 @@ function openWork(workId) {
     $('#workModal').modal('show');
     $('#loadSpin2').css('visibility', 'visible')
     $.get("/works/workInfo/" + workId, function (data) {
-        console.log(data)
         $('#workInfoId').val(data.workInfo[0].id)
         $('#workNameInfo').html(data.workInfo[0].workname)
         $('#workInfoDescription').html(data.workInfo[0].description)
@@ -143,9 +142,13 @@ function openWork(workId) {
         if(!data.workInfo[0].usecontact) {
             $('#userLink').attr('href', 'https://t.me/' + data.workInfo[0].username)
             $('#userLink').css('display', 'block')
-            $('#executorWork').html('Исполнитель: ' + data.workInfo[0].username)
+            $('#copyButton').css('display', 'none')
+            $('#exOrCon').html('Исполнитель: ')
+            $('#executorWork').html(data.workInfo[0].username)
         } else {
-            $('#executorWork').html('Контакт связи: ' + data.workInfo[0].contact)
+            $('#copyButton').css('display', 'inline')
+            $('#exOrCon').html('Контакт связи: ')
+            $('#executorWork').html(data.workInfo[0].contact)
             $('#userLink').css('display', 'none')
         }
         $('#workInfoPrice').html(getTruePrice(data.workInfo[0].price))
@@ -175,6 +178,23 @@ function getTruePrice(price) {
     else {
         return price + ' ₽'
     }
+}
+
+$('#copyButton').on('click', function () {
+    var $temp = $("<input type='text' id='tmpInput'>");
+    $("#mc").append($temp);
+    $('#copyButton').removeClass('bi-clipboard')
+    $('#copyButton').addClass('bi-check-lg')
+    $('#tmpInput').val($('#executorWork').html())
+    document.getElementById('tmpInput').select()
+    document.execCommand("copy");
+    setTimeout(showCopyB, 2000);
+    $temp.remove();
+})
+
+function showCopyB() {
+    $('#copyButton').removeClass('bi-check-lg')
+    $('#copyButton').addClass('bi-clipboard')
 }
 
 $('#claim').on('click', function () {

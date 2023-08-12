@@ -10,28 +10,31 @@ tg.MainButton.textColor = "#ffffff"; //изменяем цвет текста к
 tg.MainButton.color = "#E746E0";
 tg.expand()
 
+var tagCounter = 0
 
 function addTag(){
     var tagValue = $('#tagValue').val(); 
     if(tagValue.replace(' ', '') !== '') {
         $('#tagPlace').append(`
-        <div class="col-auto tagParentBlock" id="tag` + tagValue + `">
+        <div class="col-auto tagParentBlock" id="tag` + tagCounter + `">
             <div class="row">
                 <div class="col-auto">
                     <p class="tagToPost" >` + tagValue + `</p>
                 </div>
                 <div class="col-auto">
-                    <p onClick="deleteTag('tag` + tagValue + `')">✕</p>
+                    <p style="cursor: pointer;" onClick="deleteTag('tag` + tagCounter + `')">✕</p>
                 </div>
             </div>
         </div>
         `)
     }
+    tagCounter += 1
     $('#tagValue').val("") 
 }
 
 function deleteTag(tagName) {
     $('#' + tagName).remove();
+    tagCounter -= 1
 }
 
 $('#isFree').on('change', function (){

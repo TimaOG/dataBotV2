@@ -6,3 +6,4 @@ Error: ENOENT: no such file or directory, open 'https://api.telegram.org/file/bo
 TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Promise
 TypeError [ERR_INVALID_ARG_TYPE]: The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of Promise
 ReferenceError: workId1 is not defined
+TypeError: Cannot read properties of undefined (reading 'id')

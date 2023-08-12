@@ -26,28 +26,31 @@ window.onload = function() {
     $('#secondCategory').empty(); $('#secondCategory').html(toInsert)
 };
 
+var tagCounter = 0
 
 function addTag(){
     var tagValue = $('#tagValue').val(); 
     if(tagValue.replace(' ', '') !== '') {
         $('#tagPlace').append(`
-        <div class="col-auto tagParentBlock" id="tag` + tagValue + `">
+        <div class="col-auto tagParentBlock" id="tagE` + tagCounter + `">
             <div class="row">
                 <div class="col-auto">
                     <p class="tagToPost" >` + tagValue + `</p>
                 </div>
                 <div class="col-auto">
-                    <p onClick="deleteTag('tag` + tagValue + `')">✕</p>
+                    <p style="cursor: pointer;" onClick="deleteTag('tagE` + tagCounter + `')">✕</p>
                 </div>
             </div>
         </div>
         `)
     }
+    tagCounter += 1
     $('#tagValue').val("")  
 }
 
 function deleteTag(tagName) {
     $('#' + tagName).remove();
+    if(tagName.startsWith('tagE')) {tagCounter -= 1}
 }
 
 $('#isFree').on('change', function (){

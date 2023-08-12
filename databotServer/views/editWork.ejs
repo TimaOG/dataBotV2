@@ -85,18 +85,18 @@
                     <button onclick="addTag()">Добавить</button>
                 </div>
                 <div class="row" style="margin-top: 15px; vertical-align: middle" id="tagPlace">
-                    <% workTags.forEach((wt)=> { %>
-                        <div class="col-auto tagParentBlock" id="tag<%= wt.tagname %>">
+                    <% for(var i = 0; i < workTags.length; i++) { %>
+                        <div class="col-auto tagParentBlock" id="tag<%= i %>">
                             <div class="row">
                                 <div class="col-auto">
-                                    <p class="tagToPost" ><%= wt.tagname %></p>
+                                    <p class="tagToPost" ><%= workTags[i].tagname %></p>
                                 </div>
                                 <div class="col-auto">
-                                    <p onClick="deleteTag('tag<%= wt.tagname %>')">✕</p>
+                                    <p onClick="deleteTag('tag<%= i %>')">✕</p>
                                 </div>
                             </div>
                         </div>
-                    <% }) %>
+                    <% } %>
                 </div>
                 <div class="col-12" style="margin-top: 15px; vertical-align: middle;">
                     <p>Введите описание</p>
